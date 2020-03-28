@@ -1,0 +1,413 @@
+﻿<resources>
+
+    <!--新版登录专用-->
+
+    <string name="login">登录</string>
+
+    <string name="login_input_username_hint">用户名</string>
+
+    <string name="hint_password">密码</string>
+
+    <string name="login_hold_hint">自动登录</string>
+
+    <string name="login_forget_hint">忘记密码？</string>
+
+    <string name="login_register_hint">注册</string>
+
+    <string name="login_other_hint">其他方式登录</string>
+
+    <string name="register_input_username_hint">手机号</string>
+
+    <string name="register_username_hint">用户名</string>
+
+    <string name="register_sms_auth_code">短信验证码</string>
+
+    <string name="register_sms_hint">获取验证码</string>
+
+    <string name="register_sms_wait_hint">别激动,休息一下呗…</string>
+
+    <string name="loading_image">正在准备图片...</string>
+
+    <string name="register_done_hint">完成</string>
+
+    <string name="register_man_hint">男士</string>
+
+    <string name="register_female_hint">女士</string>
+
+    <string name="retrieve_pwd_step_hint">下一步</string>
+
+    <string name="retrieve_pwd_email_label_one">邮箱用户找回密码，请</string>
+
+    <string name="retrieve_pwd_email_label">
+
+<a>点击这里</a>
+
+</string>
+
+    <string name="reset_pwd_hint">请输入至少六位新密码</string>
+
+    <string name="register_pwd_hint">请输入至少六位数密码</string>
+
+    <string name="reset_pwd_submit">确认</string>
+
+    <string name="message_pwd_error">密码错误</string>
+
+    <string name="message_username_null">用户名未填写！！！</string>
+    <string name="app_name">晓智医疗</string>
+
+    <string name="hello_world">Hello world!</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="homepage">首页</string>
+
+    <string name="location">药店</string>
+
+    <string name="doctor">医生</string>
+
+    <string name="me">我的</string>
+
+    <string name="title_activity_daquan">DaquanActivity</string>
+
+    <string name="basemessage">请选择以下基本信息</string>
+
+    <string name="tv_sex">性 别:</string>
+
+    <string name="tv_age">年 龄:</string>
+
+    <string name="tv_time">发病时间:</string>
+
+    <string name="tv_category">分 类:</string>
+
+    <string name="sex_n">男</string>
+
+    <string name="sex_f">女</string>
+
+    <string name="year">岁</string>
+
+    <string name="month">月</string>
+
+    <string name="age_input">请输入您的年龄</string>
+
+    <string name="time_s">一个月以内</string>
+
+    <string name="time_d">一个月以上</string>
+
+    <string name="pifubing">皮肤病</string>
+
+    <string name="n_pifubing">非皮肤病</string>
+
+    <string name="next">下一步</string>
+
+    <string name="pfbjibingyuzheng">请寻找和您症状相似的图片</string>
+
+    <string name="hello">Hello World, XListViewActivity!</string>
+
+    <string name="xlistview_header_hint_normal">下拉刷新</string>
+
+    <string name="xlistview_header_hint_ready">松开刷新数据</string>
+
+    <string name="xlistview_header_hint_loading">正在加载...</string>
+
+    <string name="xlistview_header_last_time">上次更新时间：</string>
+
+    <string name="xlistview_footer_hint_normal">查看更多</string>
+
+    <string name="xlistview_footer_hint_ready">松开载入更多</string>
+
+    <string name="viewpager_indicator">%1$d/%2$d</string>
+
+    <string name="button_OK">确定</string>
+
+    <string name="no_connection">网络连接失败，请检查网络设置</string>
+
+    <string name="server_error">服务器连接失败</string>
+
+    <string name="weixin">微信登录</string>
+
+    <string name="weibo">微博登录</string>
+
+    <string name="qq">QQ登录</string>
+
+    <string name="login_agree">我已阅读并同意</string>
+
+    <string name="login_zhengce">使用条款与隐私政策</string>
+
+    <!-- 裁剪图片 -->
+
+
+    <string name="crop__done">确定</string>
+
+    <string name="crop__cancel">取消</string>
+
+    <string name="crop__saving">正在保存图片…</string>
+
+    <string name="crop__wait">请稍等…</string>
+
+    <string name="crop__pick_error">No image sources available</string>
+
+    <!--设置相关-->
+
+
+    <string name="setting_about">关于晓智医疗</string>
+
+    <string name="setting_system">系统设置</string>
+
+    <!--电子病历-->
+
+
+    <string name="add_emr">请给您的病历添加一个标题</string>
+
+    <string name="add_photo">添加照片</string>
+
+    <string name="add_take_photo">拍照</string>
+
+    <string name="add_photo_selet">选择手机相册</string>
+
+    <string name="add_emr_up">添加照片并提交</string>
+
+    <string name="add_emr_name">姓名:</string>
+
+    <string name="add_emr_birthday">出生日期:</string>
+
+    <string name="add_emr_sex">性别:</string>
+
+    <string name="add_emr_height">身高:</string>
+
+    <string name="add_emr_weight">体重:</string>
+
+    <string name="add_emr_phone">手机号:</string>
+
+    <string name="add_emr_allergy">过敏史：</string>
+
+    <string name="add_emr_adress">地址：</string>
+
+    <string name="add_emr_name_et">必填</string>
+
+    <string name="add_emr_birthday_et">例：1970-01-01</string>
+
+    <string name="add_emr_hight_et">请选择您的身高</string>
+
+    <string name="add_emr_weight_et">请选择您的体重</string>
+
+    <string name="add_emr_phone_et">请输入您的手机号码</string>
+
+    <string name="add_emr_allergy_et">请选择您的过敏史</string>
+
+    <string name="add_emr_adress_et">请输入您的地址</string>
+
+
+    <!--个人信息-->
+
+
+    <string name="user_head_icon">头像</string>
+
+    <string name="user_nicks">昵称</string>
+
+    <string name="user_birthday">出生年月</string>
+
+    <string name="user_sex">性别</string>
+
+
+    <!-- 图片上传 -->
+
+
+    <string name="cancel">取消</string>
+
+    <string name="publish_empty_text">想说什么…</string>
+
+    <string name="take_photo">拍照</string>
+
+    <string name="select_from_local">从相册中选取</string>
+
+    <string name="country_policy">查看国家政策法规</string>
+
+    <string name="country_dynamic_policy">查看最新动态</string>
+
+    <string name="complain">查看投诉</string>
+
+    <!--下拉刷新-->
+
+
+    <string name="header_hint_refresh_normal">下拉刷新</string>
+
+    <string name="header_hint_refresh_ready">释放立即刷新</string>
+
+    <string name="header_hint_refresh_loading">玩命加载中...</string>
+
+    <string name="footer_hint_load_normal">加载更多</string>
+
+    <string name="ckeck">审核中</string>
+
+    <!--名医名院-->
+
+
+    <string name="hostipal_title">名医名院</string>
+
+    <string name="analysis_check">化验单解读</string>
+
+    <!--切换声音-->
+
+
+    <string name="change_over">切换语音</string>
+
+
+    -
+    <string-array name="voicer_cloud_entries">
+
+        <item>男普通话</item>
+
+        <item>女普通话</item>
+
+        <item>粤语</item>
+
+        <item>台湾话</item>
+
+        <item>四川话</item>
+
+        <item>东北话</item>
+
+        <item>河南话</item>
+
+        <item>湖南话</item>
+
+        <item>陕西话</item>
+
+    </string-array>
+
+
+    -
+    <string-array name="voicer_cloud_values">
+
+        <item>xiaoyu</item>
+
+        <item>xiaoyan</item>
+
+        <item>xiaomei</item>
+
+        <item>xiaolin</item>
+
+        <item>xiaorong</item>
+
+        <item>xiaoqian</item>
+
+        <item>xiaokun</item>
+
+        <item>xiaoqiang</item>
+
+        <item>vixying</item>
+
+    </string-array>
+
+    <!--<item>凯瑟琳—女青、英</item><item>亨利—男青、英</item><item>玛丽—女青、英</item><item>小研—女青、中英、普通话</item><item>小琪—女青、中英、普通话</item><item>小峰—男青、中英、普通话</item><item>小新—男童、中、普通话</item><item>楠楠—女童、中、普通话</item><item>老孙—男老、中、普通话</item><item>catherine</item><item>henry</item><item>vimary</item><item>vixy</item><item>xiaoqi</item><item>vixf</item><item>xiaoxin</item><item>nannan</item><item>vils</item> -->
+
+
+    <!--医生认证相关-->
+
+
+    <string name="consultant_expert">顾问专家</string>
+
+    <string name="doctor_expert">推荐名医</string>
+
+    <!--视频相关-->
+
+
+    <string name="expert_details">专家简介</string>
+
+    <string name="video_list">视频列表</string>
+
+    <string name="nodata">暂无数据</string>
+
+    <!--发送病友圈-->
+
+
+    <string name="hint_content_send">说点什么吧...</string>
+
+    <string name="post_send">发帖</string>
+
+    <string name="bt_send">发送</string>
+
+    <string name="adress_name">地点</string>
+
+    <!--预诊相关-->
+
+
+    <string name="tv_title_pre">选择部位和症状</string>
+
+    <string name="title_pre_help">帮助</string>
+
+    <string name="tv_whole_body">全身</string>
+
+    <string name="tv_ages">年龄:</string>
+
+    <string name="hint_ages">30</string>
+
+    <string name="tv_acute">急性</string>
+
+    <string name="tv_slow">慢性</string>
+
+    <string name="hint_search_pre">输入症状,如咳嗽、发热、白细胞↑等</string>
+
+    <!--伴随症状-->
+
+
+    <string name="title_pre_follow">补充症状</string>
+
+    <string name="is_pre_follow">是否伴有以下症状</string>
+
+    <string name="no_pre_follow">没有查到匹配的症状</string>
+
+    <string name="no_result_follow">没有查到匹配的疾病</string>
+
+
+    <!--搜索相关-->
+
+
+    <string name="search_daquan">输入疾病症状等关键字搜索</string>
+
+    <string name="search_skin">请输入皮肤病关键字搜索</string>
+
+    <string name="search_assay">请输入化验项目关键字搜索</string>
+
+    <!--公共卫生服务-->
+
+
+    <string name="title_public_sanitation">公共卫生服务</string>
+
+    <string name="vp_new_title">卫计新闻</string>
+
+    <!--首页-->
+
+
+    <string name="tv_disease_encyclopedia">疾病自诊</string>
+
+    <string name="tv_disease_self">病例信息</string>
+
+    <string name="tv_interpreta_read">化验单解读</string>
+
+    <string name="tv_health_care">养生保健</string>
+
+    <string name="tv_skin_yuzhen">疾病预诊</string>
+
+    <!--养生保健-->
+
+
+    <string name="search_skinslow">输入文章关键字搜索</string>
+
+    <!--中衣-->
+
+
+    <string name="chinese_title">中 医</string>
+
+    <string name="chinese_hint">请输入中医关键字搜索</string>
+
+    <string name="open_text">展开全部</string>
+
+    <!--卫生局长-->
+
+
+    <string name="surgnor_search_hint">请输入关键字查询</string>
+
+    <string name="alert_iknow">朕知道了!</string>
+
+</resources>

@@ -1,0 +1,72 @@
+apply plugin: 'com.android.application'
+
+android {
+    splits {
+        abi {
+            enable true
+            reset()
+            include 'x86', 'armeabi-v7a'
+            universalApk true
+        }
+    }
+
+    compileSdkVersion 29
+    defaultConfig {
+        applicationId "demo.doctor.com.doctor"
+        minSdkVersion 15
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        /*ndk {
+            //选择要添加的对应 cpu 类型的 .so 库。
+            abiFilters 'x86', 'armeabi', 'armeabi-v7a', 'arm64-v8a'
+            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
+        }*/
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    // 解决 native libraries 不支持cpu的体系结构。允许模拟器调试
+}
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'com.android.support:design:28.0.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    api 'com.hyman:flowlayout-lib:1.1.2'
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.40'
+    implementation 'pub.devrel:easypermissions:1.0.1'
+    implementation 'com.google.code.gson:gson:2.5'
+    implementation files('libs/Msc.jar')
+    implementation files('libs/MobCommons-2016.1201.1839.jar')
+    implementation files('libs/MobTools-2016.1201.1839.jar')
+    implementation name: 'SMSSDK-2.1.3', ext: 'aar'
+    implementation name: 'SMSSDKGUI-2.1.3', ext: 'aar'
+    implementation 'android.arch.navigation:navigation-fragment:1.0.0'
+    implementation 'android.arch.navigation:navigation-ui:1.0.0'
+    implementation 'com.umeng.analytics:analytics:latest.integration'
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'jp.wasabeef:glide-transformations:2.0.1'
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
+
+}

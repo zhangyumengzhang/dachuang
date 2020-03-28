@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+
+    <LinearLayout android:orientation="vertical" android:fitsSystemWindows="true" android:layout_height="match_parent" android:layout_width="match_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout android:layout_height="0dp" android:layout_width="match_parent" android:layout_weight="1" android:id="@+id/content"> </FrameLayout>
+
+    <View android:layout_height="1px" android:layout_width="match_parent" android:background="@color/devide_gary_light"/>
+
+
+    <LinearLayout android:layout_height="@dimen/base49dp" android:layout_width="match_parent" android:background="@color/fragment_background">
+
+    <!-- 首页 -->
+
+
+
+    <RelativeLayout android:layout_height="match_parent" android:layout_width="0dp" android:layout_weight="1" android:id="@+id/homepage_rlayout" android:layout_marginTop="@dimen/base3dp">
+
+
+    <LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_centerVertical="true">
+
+    <ImageView android:layout_height="@dimen/base23dp" android:layout_width="@dimen/base23dp" android:id="@+id/homepage_image" android:layout_gravity="center_horizontal"/>
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/homepage_text" android:layout_gravity="center_horizontal" android:textSize="@dimen/base11sp" android:textColor="@color/fragment_text_grey" android:text="@string/homepage"/>
+
+</LinearLayout>
+
+</RelativeLayout>
+
+    <!-- 附近 -->
+
+
+
+    -<RelativeLayout android:layout_height="match_parent" android:layout_width="0dp" android:layout_weight="1" android:id="@+id/location_rlayout" android:layout_marginTop="@dimen/base3dp"/>
+
+    <!-- 医生 -->
+
+
+        -
+
+        <!-- 我的 -->
+
+
+
+    -<RelativeLayout android:layout_height="match_parent" android:layout_width="0dp" android:layout_weight="1" android:id="@+id/me_rlayout" android:layout_marginTop="@dimen/base3dp">
+
+
+    -<LinearLayout android:orientation="vertical" android:layout_height="wrap_content" android:layout_width="match_parent" android:layout_centerVertical="true">
+
+    <ImageView android:layout_height="@dimen/base23dp" android:layout_width="@dimen/base23dp" android:id="@+id/me_image" android:layout_gravity="center_horizontal"/>
+
+    <TextView android:layout_height="wrap_content" android:layout_width="wrap_content" android:id="@+id/me_text" android:layout_gravity="center_horizontal" android:textSize="11sp" android:textColor="@color/fragment_text_grey" android:text="@string/me"/>
+
+</LinearLayout>
+
+</RelativeLayout>
+
+</LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/fragment_home_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fragment_bacakgroudcolot">
+
+    <include
+        android:id="@+id/title_home_rl"
+        layout="@layout/title_text"
+        />
+
+    <RelativeLayout
+        android:id="@+id/function_vp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_home_rl">
+        <include
+            layout="@layout/home_viewpager"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_first_whole"
+        android:orientation="vertical"
+        android:layout_below="@id/function_vp"
+        >
+
+        <RelativeLayout
+            android:id="@+id/rl_firstpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_firstpager_yuzhen"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:id="@+id/imageView3"/>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+
+            <RelativeLayout
+                android:id="@+id/rl_skin_daquan"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/base3dp"
+                android:layout_marginRight="@dimen/base3dp"
+                android:layout_marginTop="@dimen/base5dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_firstpager_left"
+                >
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    >
+                    <ImageView
+                        android:id="@+id/img_first_whole"
+                        android:layout_width="@dimen/base65dp"
+                        android:layout_height="@dimen/base65dp"
+                        android:background="@drawable/daquan"/>
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="57dp"
+                        android:layout_height="12dp"
+                        android:layout_below="@id/img_first_whole"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/base4dp"
+                        android:text="@string/tv_disease_encyclopedia"
+                        android:textColor="@color/tv_disease_whole"
+                        android:textSize="@dimen/base15sp" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/skin_disease"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/base3dp"
+                    android:layout_marginTop="@dimen/base5dp"
+                    android:layout_marginLeft="@dimen/base3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_firstpager_right"
+                    >
+
+                    <ImageView
+                        android:id="@+id/img_skin_disease"
+                        android:layout_width="@dimen/base37dp"
+                        android:layout_height="@dimen/base37dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/base15dp"
+                        android:background="@drawable/img_skin_disease"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/base5dp"
+                        android:layout_toRightOf="@id/img_skin_disease"
+                        android:text="@string/tv_disease_self"
+                        android:textColor="@color/tv_skin_disease"
+                        android:textSize="@dimen/base15sp"
+                        />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_interpreta"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/base3dp"
+                    android:layout_marginTop="@dimen/base3dp"
+                    android:layout_marginLeft="@dimen/base3dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_firstpager_right"
+                    >
+
+                    <ImageView
+                        android:id="@+id/img_interprete"
+                        android:layout_width="@dimen/base37dp"
+                        android:layout_height="@dimen/base37dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/base15dp"
+                        android:background="@drawable/img_interpreta"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/base5dp"
+                        android:layout_toRightOf="@id/img_interprete"
+                        android:text="@string/tv_interpreta_read"
+                        android:textColor="@color/tv_interpreta"
+                        android:textSize="@dimen/base15sp"
+                        />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
+
+            <RelativeLayout
+                android:id="@+id/rl_public_server"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/base7dp"
+                android:layout_marginRight="@dimen/base3dp"
+                android:layout_marginTop="@dimen/base3dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_firstpager_left"
+                >
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    >
+                    <ImageView
+                        android:id="@+id/img_public_sanitation"
+                        android:layout_width="@dimen/base65dp"
+                        android:layout_height="@dimen/base65dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/base10dp"
+                        android:background="@drawable/img_health_care"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img_public_sanitation"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/base4dp"
+                        android:text="@string/title_public_sanitation"
+                        android:textColor="@color/tv_public_sanitation"
+                        android:textSize="@dimen/base15sp"
+                        />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_health_cares"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/base7dp"
+                android:layout_marginLeft="@dimen/base3dp"
+                android:layout_marginTop="@dimen/base3dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_firstpager_right"
+                >
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    >
+                    <ImageView
+                        android:id="@+id/img_health_cares"
+                        android:layout_width="@dimen/base65dp"
+                        android:layout_height="@dimen/base65dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/base10dp"
+                        android:background="@drawable/img_health_cares"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/img_health_cares"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/base5dp"
+                        android:text="@string/tv_health_care"
+                        android:textColor="@color/tv_health_care"
+                        android:textSize="@dimen/base15sp"
+                        />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_home1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:id="@+id/rl_home1"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/base140dp"
+                android:layout_marginLeft="@dimen/base10dp"
+                android:layout_weight="1"
+                android:background="@drawable/corners_bg1"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_1"
+                    android:layout_width="@dimen/base80dp"
+                    android:layout_height="@dimen/base80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/base20dp"
+                    android:src="@drawable/daquan"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_1"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/base5dp"
+                    android:layout_marginTop="@dimen/base7dp"
+                    android:text="疾病大全"
+                    android:textColor="@color/daquan_rl1_textcolor"
+                    android:textSize="@dimen/base17sp"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_home2"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/base140dp"
+                android:layout_marginLeft="@dimen/base8dp"
+                android:layout_marginRight="@dimen/base10dp"
+                android:layout_weight="1"
+                android:background="@drawable/corners_bg2">
+
+                <ImageView
+                    android:id="@+id/iv_2"
+                    android:layout_width="@dimen/base80dp"
+                    android:layout_height="@dimen/base80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/base20dp"
+                    android:src="@drawable/prognostic"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/base5dp"
+                    android:layout_marginTop="@dimen/base7dp"
+                    android:text="疾病预诊"
+                    android:textColor="@color/daquan_rl2_textcolor"
+                    android:textSize="@dimen/base17sp"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_below="@+id/ll_home1"
+            android:layout_marginTop="@dimen/base8dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            >
+
+            <RelativeLayout
+                android:id="@+id/rl_home3"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/base140dp"
+                android:layout_marginLeft="@dimen/base10dp"
+                android:layout_marginRight="@dimen/base8dp"
+                android:layout_weight="1"
+                android:background="@drawable/corners_bg3">
+
+                <ImageView
+                    android:id="@+id/iv"
+                    android:layout_width="@dimen/base80dp"
+                    android:layout_height="@dimen/base80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/base20dp"
+                    android:src="@drawable/interpretation"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/base5dp"
+                    android:layout_marginTop="@dimen/base7dp"
+                    android:text="化验检查"
+                    android:textColor="@color/daquan_rl3_textcolor"
+                    android:textSize="@dimen/base17sp"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_home4"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/base140dp"
+                android:layout_marginRight="@dimen/base10dp"
+                android:layout_weight="1"
+                android:background="@drawable/corners_bg4">
+
+                <ImageView
+                    android:id="@+id/iv_4"
+                    android:layout_width="@dimen/base80dp"
+                    android:layout_height="@dimen/base80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/base20dp"
+                    android:src="@drawable/health"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/iv_4"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/base5dp"
+                    android:layout_marginTop="@dimen/base7dp"
+                    android:text="健康服务"
+                    android:textColor="@color/daquan_rl4_textcolor"
+                    android:textSize="@dimen/base17sp"
+                    />
+            </RelativeLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
