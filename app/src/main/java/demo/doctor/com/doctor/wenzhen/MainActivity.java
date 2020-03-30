@@ -4848,6 +4848,15 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 chat10.type=1;
                 chat10.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
                 mAdapter.addData(chat10);
+                List<String> list = new ArrayList();
+                list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(uresult));
+
+                for(int i=0;i<list.size();i++){
+                    Chat chatmedic=new Chat();
+                    chatmedic.type=1;
+                    chatmedic.content=list.get(i);
+                    mAdapter.addData(chatmedic);
+                }
                 mVals.clear();
                 mVals.addAll(mVals9);
                 mFlowLayout.onChanged();
@@ -4929,6 +4938,17 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         mVals.clear();
         mVals.add("头痛是怎么回事");
         mVals.add("咳嗽是怎么回事");
+
+        List<String> list = new ArrayList();
+        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(uresult));
+
+        for(int i=0;i<list.size();i++){
+            Chat chatmedic=new Chat();
+            chatmedic.type=1;
+            chatmedic.content=list.get(i);
+            mAdapter.addData(chatmedic);
+            mVals.clear();
+        }
         i=0;
         issend=false;
     }

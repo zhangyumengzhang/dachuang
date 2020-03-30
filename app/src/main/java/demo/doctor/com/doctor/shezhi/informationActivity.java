@@ -28,7 +28,7 @@ public class informationActivity extends AppCompatActivity {
     String name,sgender,sage;
     TextView uname,gender,age;
     Button exit;
-    private String url = "http://192.168.0.104:8080/";
+    private String url = "http://192.168.0.105:8080/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent=getIntent();

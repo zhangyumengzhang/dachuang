@@ -101,6 +101,7 @@ public class setFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.bingli://病例
                 intent = new Intent(getContext(), bingli.class);
+                intent.putExtra("name",functionActivity.getname());
                 startActivity(intent);
                 break;
             case R.id.banben://版本
