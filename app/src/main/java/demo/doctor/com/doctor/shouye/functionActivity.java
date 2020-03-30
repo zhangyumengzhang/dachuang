@@ -167,7 +167,6 @@ public class functionActivity extends BaseFragmentActivity implements
             case R.id.homepage_rlayout:// 主页:
                 setTabSelection(INDEX_HOMEPAGE);
                 flag = false;
-
                 break;
             case R.id.me_rlayout:
                 setTabSelection(INDEX_ME);

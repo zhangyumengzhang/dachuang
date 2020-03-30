@@ -35,11 +35,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import demo.doctor.com.doctor.R;
+import demo.doctor.com.doctor.shouye.functionActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -57,6 +60,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     List<String> mVals5 = new ArrayList<>();
     List<String> mVals6 = new ArrayList<>();
     List<String> mVals7 = new ArrayList<>();
+    List<String> mVals8 = new ArrayList<>();
+    List<String> mVals9 = new ArrayList<>();
     private ChatAdapter mAdapter;
     int i = 1;
     private TagFlowLayout mFlowLayout;
@@ -64,9 +69,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     private EditText et;
     private LinearLayout root;
     private static int id;
-    String question2, question3, question4, question5, question6;
-    String answer1, answer2, answer3, answer4, answer5;
+    String question2, question3, question4, question5, question6,question7,question8,question9;
+    String answer1, answer2, answer3, answer4, answer5,answer6,answer7,answer8,answer9;
     String uresult;
+    boolean issend=true;
+    String name= functionActivity.getname();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +104,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     return;
                 }
                 et.setText("");
-                sendChat(s);
+                if(issend) {
+                    sendChat(s);
+                }
             }
         });
 
@@ -117,10 +126,12 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 String a = mVals.get(position);
-                sendChat(a);
-                return true;
+                if(issend) {
+                    sendChat(a);
+                    return true;
+                }
+                   return false;
             }
-
 
         });
 
@@ -141,7 +152,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             String result = speech.parseVoice(recognizerResult.getResultString());
                             Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
                             if (!TextUtils.isEmpty(result)) {
-                                sendChat(result);
+                                if(issend) {
+                                    sendChat(result);
+                                }
                             }
                         }
                     }
@@ -232,6 +245,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 final Chat chat2 = new Chat();
                 if (a.contains("头痛") || a.contains("头疼")) {
                     answer1 = "头痛";
+                    mVals1.add("怀孕");
+                    mVals1.add("未怀孕");
                    Thread t1=new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -264,6 +279,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
                 else if (a.contains("腹痛") || a.contains("肚子疼") || a.contains("胃痛") || a.contains("胃疼")) {
                     answer1 = "腹痛";
+                    mVals1.add("怀孕");
+                    mVals1.add("未怀孕");
                     Thread t1=new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -296,6 +313,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
                 else if (a.contains("咳嗽")) {
                     answer1 = "咳嗽";
+                    mVals1.add("怀孕");
+                    mVals1.add("未怀孕");
                     Thread t1=new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -328,6 +347,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
                 else if (a.contains("排便困难")) {
                     answer1 = "排便困难";
+                    mVals1.add("怀孕");
+                    mVals1.add("未怀孕");
                    Thread t1= new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -360,18 +381,34 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
                 else {
                     chat2.content = "非常抱歉，我现在还不能回答相关问题，您可以选择线下就医";
+                    i=0;
+                    mVals1.add("头痛是怎么回事");
+                    mVals1.add("咳嗽是怎么回事");
                 }
-                mVals1.add("怀孕");
-                mVals1.add("未怀孕");
-                chat2.type = 1;
-                Log.d("MainActivity", "lalal" + chat2.content);
-                mAdapter.addData(chat2);
-                mVals.clear();
-                mVals.addAll(mVals1);
-                mFlowLayout.onChanged();
+
+                if(issend){
+                    chat2.type = 1;
+                    mAdapter.addData(chat2);
+                    mVals.clear();
+                    mVals.addAll(mVals1);
+                    mFlowLayout.onChanged();
+                }
                 break;
             case 2:
                 final Chat chat3 = new Chat();
+                if(answer1=="头痛"||answer1=="咳嗽"){
+                    mVals2.add("长期");
+                    mVals2.add("短期");
+                }
+                else if(answer1=="腹痛"){
+                    mVals2.add("饭前");
+                    mVals2.add("饭后");
+                    mVals2.add("无区别");
+                }
+                else if(answer1=="排便困难"){
+                    mVals2.add("是");
+                    mVals2.add("否");
+                }
                 if (a.contains("未怀孕") || a.contains("没有")) {
                     answer2 = "未怀孕";
                     Thread t1=new Thread(new Runnable() {
@@ -438,25 +475,18 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
                 else {
                     chat3.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                    i=0;
+                    mVals2.add("头痛是怎么回事");
+                    mVals2.add("咳嗽是怎么回事");
                 }
-                if(answer1=="头痛"||answer1=="咳嗽"){
-                    mVals2.add("长期");
-                    mVals2.add("短期");
+
+                if(issend){
+                    chat3.type = 1;
+                    mAdapter.addData(chat3);
+                    mVals.clear();
+                    mVals.addAll(mVals2);
+                    mFlowLayout.onChanged();
                 }
-                else if(answer1=="腹痛"){
-                    mVals2.add("饭前");
-                    mVals2.add("饭后");
-                    mVals2.add("无区别");
-                }
-                else if(answer1=="排便困难"){
-                    mVals2.add("是");
-                    mVals2.add("否");
-                }
-                chat3.type = 1;
-                mAdapter.addData(chat3);
-                mVals.clear();
-                mVals.addAll(mVals2);
-                mFlowLayout.onChanged();
                 break;
             case 3:
                 final Chat chat4 = new Chat();
@@ -530,6 +560,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     else {
                         chat4.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals3.add("头痛是怎么回事");
+                        mVals3.add("咳嗽是怎么回事");
                     }
                 }
                 else if (answer1 == "腹痛") {
@@ -559,7 +592,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 }
                             }
                         });
-
                         try {
                             t1.start();
                             t1.join();
@@ -631,6 +663,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     else {
                         chat4.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals3.add("头痛是怎么回事");
+                        mVals3.add("咳嗽是怎么回事");
                     }
                 }
                 else if (answer1 == "咳嗽") {
@@ -702,6 +737,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     else {
                         chat4.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals3.add("头痛是怎么回事");
+                        mVals3.add("咳嗽是怎么回事");
                     }
                 }
                 else if (answer1 == "排便困难") {
@@ -797,14 +835,20 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     else{
                         chat4.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals3.add("头痛是怎么回事");
+                        mVals3.add("咳嗽是怎么回事");
                     }
                 }
-                chat4.type = 1;
-                Log.d("MainActivity", "hahahh" + chat4.content);
-                mAdapter.addData(chat4);
-                mVals.clear();
-                mVals.addAll(mVals3);
-                mFlowLayout.onChanged();
+
+                if(issend){
+                    chat4.type = 1;
+                    Log.d("MainActivity", "hahahh" + chat4.content);
+                    mAdapter.addData(chat4);
+                    mVals.clear();
+                    mVals.addAll(mVals3);
+                    mFlowLayout.onChanged();
+                }
                 break;
             case 4:
                 final Chat chat5 = new Chat();
@@ -906,7 +950,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             }
                             }
                         else {
-                                chat5.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            chat5.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            i=0;
+                            mVals4.add("头痛是怎么回事");
+                            mVals4.add("咳嗽是怎么回事");
                             }
                         }
                     else if(answer3=="长期"){
@@ -975,7 +1022,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             }
                             }
                         else {
-                                chat5.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            chat5.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            i=0;
+                            mVals4.add("头痛是怎么回事");
+                            mVals4.add("咳嗽是怎么回事");
                             }
                     }
                 }
@@ -1078,6 +1128,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     else {
                         chat5.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals4.add("头痛是怎么回事");
+                        mVals4.add("咳嗽是怎么回事");
                     }
                 }
                 else if (answer1 == "咳嗽") {
@@ -1146,15 +1199,19 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         }
                         else {
                             chat5.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            i=0;
+                            mVals4.add("头痛是怎么回事");
+                            mVals4.add("咳嗽是怎么回事");
                         }
 
                         if(answer4=="阵发性"){
-                            mVals5.add("一天中的特殊时段（例如晨起、晚上）");
-                            mVals5.add("活动加重");
-                        }else if(answer4=="持续性"){
-                            mVals5.add("咳痰");
-                            mVals5.add("咽痛");
-                            mVals5.add("喘息");
+                            mVals4.add("一天中的特殊时段（例如晨起、晚上）");
+                            mVals4.add("活动加重");
+                        }
+                        else if(answer4=="持续性"){
+                            mVals4.add("咳痰");
+                            mVals4.add("咽痛、头痛");
+                            mVals4.add("喘息、胸闷");
                         }
                     }
                     else if(answer3=="长期"){
@@ -1222,13 +1279,17 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         }
                         else {
                             chat5.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            i=0;
+                            mVals4.add("头痛是怎么回事");
+                            mVals4.add("咳嗽是怎么回事");
                         }
                         if(answer4=="是"){
-                            mVals5.add("是");
-                            mVals5.add("否");
-                        }else if(answer4=="否"){
-                            mVals5.add("阵发性");
-                            mVals5.add("持续性");
+                            mVals4.add("是");
+                            mVals4.add("否");
+                        }
+                        else if(answer4=="否"){
+                            mVals4.add("阵发性");
+                            mVals4.add("持续性");
                         }
                     }
                 }
@@ -1347,17 +1408,23 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     else {
                         chat5.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i = 0;
+                        mVals4.add("头痛是怎么回事");
+                        mVals4.add("咳嗽是怎么回事");
                     }
                     if(answer3=="否"){
                         mVals4.add("大便干硬");
                         mVals4.add("粘液脓血便");
                     }
                 }
-                chat5.type = 1;
-                mAdapter.addData(chat5);
-                mVals.clear();
-                mVals.addAll(mVals4);
-                mFlowLayout.onChanged();
+
+                if(issend){
+                    chat5.type = 1;
+                    mAdapter.addData(chat5);
+                    mVals.clear();
+                    mVals.addAll(mVals4);
+                    mFlowLayout.onChanged();
+                }
                 break;
             case 5:
                 final Chat chat6 = new Chat();
@@ -1429,6 +1496,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         }
                         else{
                             chat6.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            i=0;
+                            mVals5.add("头痛是怎么回事");
+                            mVals5.add("咳嗽是怎么回事");
                         }
                     }
                     else if(answer4=="是"){
@@ -1498,6 +1568,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         }
                         else{
                             chat6.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            i=0;
+                            mVals5.add("头痛是怎么回事");
+                            mVals5.add("咳嗽是怎么回事");
                         }
                     }
                     else if(answer4=="否"){
@@ -1570,6 +1643,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         }
                         else{
                             chat6.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                            i=0;
+                            mVals5.add("头痛是怎么回事");
+                            mVals5.add("咳嗽是怎么回事");
                         }
                     }
                 }
@@ -1700,8 +1776,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                     else{
                         chat6.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals5.add("头痛是怎么回事");
+                        mVals5.add("咳嗽是怎么回事");
                     }
-
                    if(answer5=="是"||answer5=="否"){
                       mVals5.add("上腹");
                       mVals5.add("中腹");
@@ -1714,9 +1792,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 else if(answer1=="咳嗽"){
                      if(a.contains("阵发")){
                          answer5="阵发性";
-                         mVals6.add("一天中的特殊时段（例如晨起、晚上）");
-                         mVals6.add("活动加重");
-                         mVals6.add("刺激（如气味）加重");
+                         mVals5.add("一天中的特殊时段（例如晨起、晚上）");
+                         mVals5.add("活动加重");
+                         mVals5.add("刺激（如气味）加重");
                          Thread t1=new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -1748,9 +1826,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                      }
                      else if(a.contains("持续")){
                          answer5="持续性";
-                         mVals6.add("咳痰");
-                         mVals6.add("咽痛");
-                         mVals6.add("喘息");
+                         mVals5.add("咳痰");
+                         mVals5.add("咽痛、头痛");
+                         mVals5.add("喘息、胸闷");
                          Thread t1=new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -1766,7 +1844,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6 = result;
                                      }
                                  } catch (IOException e) {
                                      e.printStackTrace();
@@ -1781,9 +1859,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                          }
                      }
                      else if(a.contains("早晨")||a.contains("晚上")||a.contains("一天")){
-                         mVals6.add("咳痰");
-                         mVals6.add("咽痛");
-                         mVals6.add("喘息");
+                         mVals5.add("咳痰");
+                         mVals5.add("咽痛、头痛");
+                         mVals5.add("喘息、胸闷");
                          answer5="一天中的特殊时段（例如晨起、晚上）";
                          Thread t1=new Thread(new Runnable() {
                              @Override
@@ -1800,7 +1878,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6 = result;
                                      }
                                  } catch (IOException e) {
                                      e.printStackTrace();
@@ -1816,8 +1894,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                      }
                      else if(a.contains("活动")||a.contains("运动")){
                          answer5="活动加重";
-                         mVals6.add("肢体乏力");
-                         mVals6.add("喘息、胸闷");
+                         mVals5.add("肢体乏力");
+                         mVals5.add("喘息、胸闷");
                          Thread t1=new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -1833,7 +1911,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6 = result;
                                      }
                                  } catch (IOException e) {
                                      e.printStackTrace();
@@ -1849,7 +1927,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                      }
                      else if(a.contains("刺激")){
                          answer5="刺激（如气味）加重";
-                         mVals6.add("喘息、胸闷");
+                         mVals5.add("喘息、胸闷");
                          Thread t1=new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -1865,7 +1943,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6 = result;
                                      }
                                  } catch (IOException e) {
                                      e.printStackTrace();
@@ -1881,8 +1959,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                      }
                      else if(a.contains("痰")){
                          answer5="咳痰";
-                         mVals6.add("稀白");
-                         mVals6.add("黄稠");
+                         mVals5.add("稀白");
+                         mVals5.add("黄稠");
                          Thread t1=new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -1898,7 +1976,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6 = result;
                                      }
                                  } catch (IOException e) {
                                      e.printStackTrace();
@@ -1914,8 +1992,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                      }
                      else if(a.contains("头痛")||a.contains("头疼")||a.contains("喉咙")||a.contains("咽")){
                          answer5="咽痛、头痛";
-                         mVals6.add("是");
-                         mVals6.add("否");
+                         mVals5.add("是");
+                         mVals5.add("否");
                          Thread t1=new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -1931,7 +2009,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6 = result;
                                      }
                                  } catch (IOException e) {
                                      e.printStackTrace();
@@ -1947,8 +2025,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                      }
                      else if(a.contains("喘")||a.contains("胸闷")){
                          answer5="喘息、胸闷";
-                         mVals6.add("是");
-                         mVals6.add("否");
+                         mVals5.add("是");
+                         mVals5.add("否");
                          Thread t1=new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -1964,7 +2042,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6= result;
                                      }
                                  } catch (IOException e) {
                                      e.printStackTrace();
@@ -2018,7 +2096,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6= result;
                                      }else{
                                          t5.start();
                                          t5.join();
@@ -2058,6 +2136,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                  } catch (IOException e) {
                                      e.printStackTrace();
                                  }
+                                 //chat6.type = 1;
+                                // mAdapter.addData(chat6);
+                                 mVals.clear();
+                                // mVals.addAll(mVals5);
+                                 mFlowLayout.onChanged();
                              }
                          });
                          Thread t1=new Thread(new Runnable() {
@@ -2075,7 +2158,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                      Log.d("MainActivity", "run: " + result);
                                      if (result != null) {
-                                         chat6.content = question5 = result;
+                                         chat6.content = question6 = result;
                                      }else{
                                          t5.start();
                                          t5.join();
@@ -2095,56 +2178,2681 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                      }
                      else{
                          chat6.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                         i=0;
+                         mVals5.add("头痛是怎么回事");
+                         mVals5.add("咳嗽是怎么回事");
                      }
                 }
-                chat6.type = 1;
-                mAdapter.addData(chat6);
-                mVals.clear();
-                mVals.addAll(mVals5);
-                mFlowLayout.onChanged();
+                if(issend){
+                    chat6.type = 1;
+                    mAdapter.addData(chat6);
+                    mVals.clear();
+                    mVals.addAll(mVals5);
+                    mFlowLayout.onChanged();
+                }
                 break;
             case 6:
                 final Chat chat7 = new Chat();
                 if(answer1=="头痛"){
+                   if(a.contains("是")){
+                       mVals6.add("呕吐");
+                       mVals6.add("发热");
+                       mVals6.add("咽痛、乏力、咳嗽有痰（黄稠）");
+                       mVals6.add("心悸、发汗、饥饿");
+                       mVals6.add("颈部压痛");
+                       answer6="是";
+                       final Thread t6=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "questionid7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       id = Integer.parseInt(result);
+                                   }
+                               } catch (IOException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
 
+                       Thread t1=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       chat7.content = question7 = result;
+                                   }else{
+                                       t6.start();
+                                       t6.join();
+                                       getresult(id);
+                                   }
+                               } catch (IOException | InterruptedException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+                       try {
+                           t1.start();
+                           t1.join();
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   }
+                   else if(a.contains("否")){
+                       answer6="否";
+                       mVals6.add("呕吐");
+                       mVals6.add("发热");
+                       mVals6.add("咽痛、乏力、咳嗽有痰（黄稠）");
+                       mVals6.add("心悸、发汗、饥饿");
+                       mVals6.add("颈部压痛");
+                       final Thread t6=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "questionid7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       id = Integer.parseInt(result);
+                                   }
+                               } catch (IOException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+
+                       Thread t1=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       chat7.content = question7 = result;
+                                   }else{
+                                       t6.start();
+                                       t6.join();
+                                       getresult(id);
+                                   }
+                               } catch (IOException | InterruptedException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+                       try {
+                           t1.start();
+                           t1.join();
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   }
+                   else if(a.contains("吐")){
+                        answer6="呕吐";
+                        mVals6.add("1周以下");
+                        mVals6.add("1周以上");
+                       Thread t1=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       chat7.content = question7 = result;
+                                   }
+                               } catch (IOException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+                       try {
+                           t1.start();
+                           t1.join();
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   }
+                   else if(a.contains("发热")||a.contains("发烧")){
+                       answer6="发热";
+                       mVals6.add("畏寒、浑身酸痛、流清涕、咳嗽有痰（稀白）");
+                       Thread t1=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       chat7.content = question7 = result;
+                                   }
+                               } catch (IOException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+                       try {
+                           t1.start();
+                           t1.join();
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   }
+                   else if(a.contains("力")||a.contains("喉咙")||a.contains("痰")||a.contains("咽")){
+                       answer6="咽痛、乏力、咳嗽有痰（黄稠）";
+                       final Thread t6=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "questionid7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                    id = Integer.parseInt(result);
+                                   }
+                               } catch (IOException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+
+                       Thread t1=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       chat7.content = question7 = result;
+                                   }else{
+                                       t6.start();
+                                       t6.join();
+                                       getresult(id);
+                                   }
+                               } catch (IOException | InterruptedException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+                       try {
+                           t1.start();
+                           t1.join();
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   }
+                   else if(a.contains("饿")||a.contains("汗")||a.contains("心")){
+                       answer6="心悸、发汗、饥饿";
+                       final Thread t6=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "questionid7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       id = Integer.parseInt(result);
+                                   }
+                               } catch (IOException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+
+                       Thread t1=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       chat7.content = question7 = result;
+                                   }else{
+                                       t6.start();
+                                       t6.join();
+                                       getresult(id);
+                                   }
+                               } catch (IOException | InterruptedException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+                       try {
+                           t1.start();
+                           t1.join();
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   }
+                   else if(a.contains("颈")||a.contains("脖子")){
+                       answer6="颈部压痛";
+                       mVals6.add("手臂麻木、眩晕");
+                       Thread t1=new Thread(new Runnable() {
+                           @Override
+                           public void run() {
+                               String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                               try {
+                                   URL url = new URL(path); //新建url并实例化
+                                   HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                   connection.setRequestMethod("GET");//获取服务器数据
+                                   connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                   connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                   InputStream in = connection.getInputStream();
+                                   BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                   String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                   Log.d("MainActivity", "run: " + result);
+                                   if (result != null) {
+                                       chat7.content = question7 = result;
+                                   }
+                               } catch (IOException e) {
+                                   e.printStackTrace();
+                               }
+                           }
+                       });
+                       try {
+                           t1.start();
+                           t1.join();
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   }
+                   else{
+                       chat7.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                       i=0;
+                       mVals6.add("头痛是怎么回事");
+                       mVals6.add("咳嗽是怎么回事");
+                   }
                 }
                 else if(answer1=="腹痛"){
-
+                    mVals6.add("是");
+                    mVals6.add("否");
+                    if(a.contains("上")){
+                        answer6="上腹";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat7.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("中")){
+                        answer6="中腹";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat7.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("是")){
+                        answer6="是";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat7.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("否")||a.contains("没有")){
+                        answer6="否";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat7.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        chat7.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals6.add("头痛是怎么回事");
+                        mVals6.add("咳嗽是怎么回事");
+                    }
                 }
                 else if(answer1=="咳嗽"){
-
+                     if(a.contains("痰")){
+                        mVals6.add("稀白");
+                        mVals6.add("黄稠");
+                        answer6="咳痰";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("咽痛")||a.contains("头痛")||a.contains("喉咙")){
+                         mVals6.add("是");
+                         mVals6.add("否");
+                         answer6="咽痛、头痛";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("喘")||a.contains("胸")){
+                         mVals6.add("是");
+                         mVals6.add("否");
+                         answer6="喘息、胸闷";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("力")){
+                         answer6="肢体乏力";
+                         final Thread t6=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "questionid7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         id=Integer.parseInt(result);
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }else{
+                                         t6.start();
+                                         t6.join();
+                                         getresult(id);
+                                     }
+                                 } catch (IOException | InterruptedException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("稀")||a.contains("白")){
+                         mVals6.add("是");
+                         mVals6.add("否");
+                         answer6="稀白";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("黄")||a.contains("稠")){
+                         mVals6.add("是");
+                         mVals6.add("否");
+                         answer6="黄稠";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("是")){
+                         mVals6.add("是");
+                         mVals6.add("否");
+                         answer6="是";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("否")||a.contains("不")){
+                         mVals6.add("是");
+                         mVals6.add("否");
+                         answer6="否";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("早晨")||a.contains("晚上")){
+                         mVals6.add("咳痰");
+                         mVals6.add("咽痛、头痛");
+                         mVals6.add("喘息、胸闷");
+                         answer6="一天中的特殊时段（例如晨起、晚上）";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("动")){
+                         mVals6.add("肢体乏力");
+                         mVals6.add("喘息、胸闷");
+                         answer6="活动加重";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else if(a.contains("刺激")||a.contains("气味")){
+                         mVals6.add("喘息、胸闷");
+                         answer6="刺激（如气味）加重";
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question7?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat7.content = question6 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     else{
+                         chat7.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                         i=0;
+                         mVals6.add("头痛是怎么回事");
+                         mVals6.add("咳嗽是怎么回事");
+                     }
                 }
-                chat7.type = 1;
-                mAdapter.addData(chat7);
 
-                mVals.clear();
-                mVals.addAll(mVals6);
-                mFlowLayout.onChanged();
+                if(issend){
+                    chat7.type = 1;
+                    mAdapter.addData(chat7);
+                    mVals.clear();
+                    mVals.addAll(mVals6);
+                    mFlowLayout.onChanged();
+                }
                 break;
             case 7:
-                Chat chat8 = new Chat();
-                chat8.content = "发病前患有感冒吗？";
-                chat8.type = 1;
-                mAdapter.addData(chat8);
-                mVals.clear();
-                mVals.addAll(mVals7);
-                mFlowLayout.onChanged();
+                final Chat chat8 = new Chat();
+                if(answer1=="头痛"){
+                    if(a.contains("吐")){
+                        answer7="呕吐";
+                        mVals7.add("1周以下");
+                        mVals7.add("1周以上");
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question8 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("发热")||a.contains("发烧")){
+                        answer7="发热";
+                        mVals7.add("畏寒、浑身酸痛、流清涕、咳嗽有痰（稀白）");
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat8.content = question8 = result;
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("力")||a.contains("喉咙")||a.contains("痰")||a.contains("咽")){
+                        answer7="咽痛、乏力、咳嗽有痰（黄稠）";
+                        final Thread t7=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+"&answer7="+answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id = Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat8.content = question8 = result;
+                                     }else{
+                                         t7.start();
+                                         t7.join();
+                                         getresult(id);
+                                     }
+                                 } catch (IOException | InterruptedException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("饿")||a.contains("汗")||a.contains("心")){
+                        answer7="心悸、发汗、饥饿";
+                         final Thread t7=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "questionid8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+"&answer7="+answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         id = Integer.parseInt(result);
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat8.content = question8 = result;
+                                     }else{
+                                         t7.start();
+                                         t7.join();
+                                         getresult(id);
+                                     }
+                                 } catch (IOException | InterruptedException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("颈")||a.contains("脖子")){
+                        answer7="颈部压痛";
+                        mVals7.add("手臂麻木、眩晕");
+                         final Thread t7=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "questionid8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+"&answer7="+answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         id = Integer.parseInt(result);
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat8.content = question8 = result;
+                                     }else{
+                                         t7.start();
+                                         t7.join();
+                                         getresult(id);
+                                     }
+                                 } catch (IOException | InterruptedException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("手臂麻木、眩晕")){
+                        answer7="是";
+                         final Thread t7=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "questionid8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+"&answer7="+answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         id = Integer.parseInt(result);
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat8.content = question8 = result;
+                                     }else{
+                                         t7.start();
+                                         t7.join();
+                                         getresult(id);
+                                     }
+                                 } catch (IOException | InterruptedException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("痰")||a.contains("涕")||a.contains("冷")||a.contains("酸痛")){
+                        answer7="畏寒、浑身酸痛、流清涕、咳嗽有痰（稀白）";
+                         final Thread t7=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "questionid8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+"&answer7="+answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         id = Integer.parseInt(result);
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat8.content = question8 = result;
+                                     }else{
+                                         t7.start();
+                                         t7.join();
+                                         getresult(id);
+                                     }
+                                 } catch (IOException | InterruptedException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("下")){
+                         answer7="1周以下";
+                         final Thread t7=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "questionid8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+"&answer7="+answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         id = Integer.parseInt(result);
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat8.content = question8= result;
+                                     }else{
+                                         t7.start();
+                                         t7.join();
+                                         getresult(id);
+                                     }
+                                 } catch (IOException | InterruptedException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                    else if(a.contains("上")){
+                         answer7="1周以上";
+                         final Thread t7=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "questionid8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+"&answer7="+answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         id = Integer.parseInt(result);
+                                     }
+                                 } catch (IOException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         Thread t1=new Thread(new Runnable() {
+                             @Override
+                             public void run() {
+                                 String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                 try {
+                                     URL url = new URL(path); //新建url并实例化
+                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                     connection.setRequestMethod("GET");//获取服务器数据
+                                     connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                     connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                     InputStream in = connection.getInputStream();
+                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                     Log.d("MainActivity", "run: " + result);
+                                     if (result != null) {
+                                         chat8.content = question8 = result;
+                                     }else{
+                                         t7.start();
+                                         t7.join();
+                                         getresult(id);
+                                     }
+                                 } catch (IOException | InterruptedException e) {
+                                     e.printStackTrace();
+                                 }
+                             }
+                         });
+                         try {
+                             t1.start();
+                             t1.join();
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                    else{
+                        chat8.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                         i=0;
+                         mVals7.add("头痛是怎么回事");
+                         mVals7.add("咳嗽是怎么回事");
+                    }
+                }
+                else if(answer1=="腹痛"){
+                    mVals7.add("是");
+                    mVals7.add("否");
+                    if(a.contains("是")){
+                        answer7="是";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("否")||a.contains("没有")){
+                        answer7="否";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        chat8.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals7.add("头痛是怎么回事");
+                        mVals7.add("咳嗽是怎么回事");
+                    }
+                }
+                else if(answer1=="咳嗽"){
+                    if(a.contains("痰")){
+                        mVals7.add("稀白");
+                        mVals7.add("黄稠");
+                        answer7="咳痰";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("咽痛")||a.contains("头痛")||a.contains("喉咙")){
+                        mVals7.add("是");
+                        mVals7.add("否");
+                        answer7="咽痛、头痛";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("喘")||a.contains("胸")){
+                        mVals7.add("是");
+                        mVals7.add("否");
+                        answer7="喘息、胸闷";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("力")){
+                        answer7="肢体乏力";
+                        final Thread t7=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                       id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }else{
+                                        t7.start();
+                                        t7.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("稀")||a.contains("白")){
+                        mVals7.add("是");
+                        mVals7.add("否");
+                        answer7="稀白";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("黄")||a.contains("稠")){
+                        mVals7.add("是");
+                        mVals7.add("否");
+                        answer7="黄稠";
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("是")){
+                        mVals7.add("是");
+                        mVals7.add("否");
+                        answer7="是";
+                        final Thread t7=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }else{
+                                        t7.start();
+                                        t7.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("否")||a.contains("不")){
+                        mVals7.add("是");
+                        mVals7.add("否");
+                        answer7="否";
+                        final Thread t7=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question8?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat8.content = question6 = result;
+                                    }else{
+                                        t7.start();
+                                        t7.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        chat8.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals7.add("头痛是怎么回事");
+                        mVals7.add("咳嗽是怎么回事");
+                    }
+                }
+
+                if(issend){
+                    chat8.type = 1;
+                    mAdapter.addData(chat8);
+                    mVals.clear();
+                    mVals.addAll(mVals7);
+                    mFlowLayout.onChanged();
+                }
                 break;
             case 8:
-                Chat chat10 = new Chat();
-                chat10.content = "谢谢您的回答，您可能的疾病是" + "如果出现紧急情况，请及时就医哦。";
-                chat10.type = 1;
-                mAdapter.addData(chat10);
-                mVals.clear();
-                mVals.add("感冒是怎么回事");
-                mVals.add("咳嗽是怎么回事");
-                mFlowLayout.onChanged();
-                i = 0;
+                final Chat chat9 = new Chat();
+                if(answer1=="头痛"){
+                    if(a.contains("麻")||a.contains("晕")){
+                        answer8="手臂麻木、眩晕";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9 = result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("痰")||a.contains("涕")||a.contains("冷")||a.contains("酸痛")){
+                        answer8="畏寒、浑身酸痛、流清涕、咳嗽有痰（稀白）";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9= result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("下")){
+                        answer8="1周以下";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9 = result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("上")){
+                        answer8="1周以上";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9 = result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        chat9.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals8.add("头痛是怎么回事");
+                        mVals8.add("咳嗽是怎么回事");
+                    }
+                }
+                else if(answer1=="腹痛"){
+                    mVals8.add("是");
+                    mVals8.add("否");
+                    if(a.contains("是")){
+                        answer8="是";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9 = result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("否")||a.contains("没有")){
+                        answer8="否";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9 = result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        chat9.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals8.add("头痛是怎么回事");
+                        mVals8.add("咳嗽是怎么回事");
+                    }
+                }
+                else if(answer1=="咳嗽"){
+                    if(a.contains("稀")||a.contains("白")){
+                        mVals8.add("是");
+                        mVals8.add("否");
+                        answer8="稀白";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9 = result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("黄")||a.contains("稠")){
+                        mVals8.add("是");
+                        mVals8.add("否");
+                        answer8="黄稠";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9= result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("是")){
+                        answer8="是";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9 = result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if(a.contains("否")||a.contains("不")){
+                        answer8="否";
+                        final  Thread t8=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id=Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question9?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat9.content = question9 = result;
+                                    }else{
+                                        t8.start();
+                                        t8.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        chat9.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals8.add("头痛是怎么回事");
+                        mVals8.add("咳嗽是怎么回事");
+                    }
+                }
+
+                if(issend){
+                    chat9.type = 1;
+                    mAdapter.addData(chat9);
+                    mVals.clear();
+                    mVals.addAll(mVals8);
+                    mFlowLayout.onChanged();
+                }
                 break;
             case 9:
+                final Chat chat10=new Chat();
+                if(answer1=="腹痛"){
+                  if(a.contains("是")){
+                    answer9="是";
+                      Thread tr = new Thread(new Runnable() {
+                          @Override
+                          public void run() {
+                              //获取系统当前时间
+                              java.util.Date dt = new java.util.Date();
+                              java.text.SimpleDateFormat sdf =
+                                      new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                              String currentTime = sdf.format(dt);
+                              String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                              try {
+                                  URL url = new URL(path); //新建url并实例化
+                                  HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                  connection.setRequestMethod("GET");//获取服务器数据
+                                  connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                  connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                  InputStream in = connection.getInputStream();
+                                  BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                  String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                  Log.d("MainActivity", "run: " + result);
+                              } catch (IOException e) {
+                                  e.printStackTrace();
+                              }
+                          }
+                      });
+                    Thread t1=new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String path = url + "qresult?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8+ "&answer9=" + answer9;
+                            try {
+                                URL url = new URL(path); //新建url并实例化
+                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                connection.setRequestMethod("GET");//获取服务器数据
+                                connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                InputStream in = connection.getInputStream();
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                Log.d("MainActivity", "run: " + result);
+                                if (result != null) {
+                                    chat10.content = uresult = result;
+                                }
+                            } catch (IOException  e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    try {
+                        t1.start();
+                        t1.join();
+                        tr.start();
+                        tr.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                  else if(a.contains("否")||a.contains("没有")){
+                    answer9="否";
+                      Thread tr = new Thread(new Runnable() {
+                          @Override
+                          public void run() {
+                              //获取系统当前时间
+                              java.util.Date dt = new java.util.Date();
+                              java.text.SimpleDateFormat sdf =
+                                      new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                              String currentTime = sdf.format(dt);
+                              String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                              try {
+                                  URL url = new URL(path); //新建url并实例化
+                                  HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                  connection.setRequestMethod("GET");//获取服务器数据
+                                  connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                  connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                  InputStream in = connection.getInputStream();
+                                  BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                  String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                  Log.d("MainActivity", "run: " + result);
+                              } catch (IOException e) {
+                                  e.printStackTrace();
+                              }
+                          }
+                      });
+                      Thread t1=new Thread(new Runnable() {
+                          @Override
+                          public void run() {
+                              String path = url + "qresult?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8+ "&answer9=" + answer9;
+                              try {
+                                  URL url = new URL(path); //新建url并实例化
+                                  HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                  connection.setRequestMethod("GET");//获取服务器数据
+                                  connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                  connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                  InputStream in = connection.getInputStream();
+                                  BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                  String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                  Log.d("MainActivity", "run: " + result);
+                                  if (result != null) {
+                                      chat10.content = uresult = result;
+                                  }
+                              } catch (IOException  e) {
+                                  e.printStackTrace();
+                              }
+                          }
+                      });
+                      try {
+                          t1.start();
+                          t1.join();
+                          tr.start();
+                          tr.join();
+                      } catch (InterruptedException e) {
+                          e.printStackTrace();
+                      }
+                }
+                  else{
+                    chat10.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                    i=0;
+                    mVals9.add("头痛是怎么回事");
+                    mVals9.add("咳嗽是怎么回事");
+                }
+                }
+                else if(answer1=="咳嗽"){
+                    if(a.contains("是")){
+                    answer9="是";
+                        Thread tr = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //获取系统当前时间
+                                java.util.Date dt = new java.util.Date();
+                                java.text.SimpleDateFormat sdf =
+                                        new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                String currentTime = sdf.format(dt);
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "qresult?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8+ "&answer9=" + answer9;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat10.content = uresult = result;
+                                    }
+                                } catch (IOException  e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                            tr.start();
+                            tr.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                }
+                    else if(a.contains("否")||a.contains("不")){
+                    answer9="否";
+                        Thread tr = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //获取系统当前时间
+                                java.util.Date dt = new java.util.Date();
+                                java.text.SimpleDateFormat sdf =
+                                        new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                String currentTime = sdf.format(dt);
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "qresult?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3 + "&answer4=" + answer4 + "&answer5=" + answer5+ "&answer6=" + answer6+ "&answer7=" + answer7+ "&answer8=" + answer8+ "&answer9=" + answer9;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat10.content = uresult = result;
+                                    }
+                                } catch (IOException  e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                            tr.start();
+                            tr.join();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                }
+                    else{
+                    chat10.content="非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                    i=0;
+                    mVals9.add("头痛是怎么回事");
+                    mVals9.add("咳嗽是怎么回事");
+                }
+            }
 
+                chat10.type=1;
+                chat10.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
+                mAdapter.addData(chat10);
+                mVals.clear();
+                mVals.addAll(mVals9);
+                mFlowLayout.onChanged();
+                i=0;
                 break;
-
         }
 
         i++;
@@ -2158,38 +4866,71 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             }
         });
     }
-public void getresult(final int aid){
-    final Chat chatresult = new Chat();
-    chatresult.type=1;
-    Thread t1=new Thread(new Runnable() {
-        @Override
-        public void run() {
-            String path = url + "result?id=" + aid ;
-            try {
-                URL url = new URL(path); //新建url并实例化
-                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");//获取服务器数据
-                connection.setReadTimeout(8000);//设置读取超时的毫秒数
-                connection.setConnectTimeout(8000);//设置连接超时的毫秒数
-                InputStream in = connection.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
-                Log.d("MainActivity", "run: " + result);
-                if (result != null) {
-                   uresult=result;
+
+    public void getresult(final int aid) {
+        final Chat chatresult = new Chat();
+        chatresult.type = 1;
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String path = url + "result?id=" + aid;
+                try {
+                    URL url = new URL(path); //新建url并实例化
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");//获取服务器数据
+                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                    InputStream in = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                    Log.d("MainActivity", "run: " + result);
+                    if (result != null) {
+                        uresult = result;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        });
+        Thread tr = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //获取系统当前时间
+                java.util.Date dt = new java.util.Date();
+                java.text.SimpleDateFormat sdf =
+                        new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                String currentTime = sdf.format(dt);
+                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                try {
+                    URL url = new URL(path); //新建url并实例化
+                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                    connection.setRequestMethod("GET");//获取服务器数据
+                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                    InputStream in = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                    Log.d("MainActivity", "run: " + result);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        try {
+            t1.start();
+            t1.join();
+            tr.start();
+            tr.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-    });
-    try {
-        t1.start();
-        t1.join();
-    } catch (InterruptedException e) {
-        e.printStackTrace();
+        chatresult.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
+        mAdapter.addData(chatresult);
+        mVals.clear();
+        mVals.add("头痛是怎么回事");
+        mVals.add("咳嗽是怎么回事");
+        i=0;
+        issend=false;
     }
-    chatresult.content= "谢谢您的回答，您可能的疾病是" + uresult+". "+"如果出现紧急情况，请及时就医哦。";
-    mAdapter.addData(chatresult);
-}
+
 }

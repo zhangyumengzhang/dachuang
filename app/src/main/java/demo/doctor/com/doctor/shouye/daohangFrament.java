@@ -1,6 +1,6 @@
 package demo.doctor.com.doctor.shouye;
 
-import android.annotation.SuppressLint;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,13 +16,18 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import com.umeng.analytics.MobclickAgent;
+
+import java.util.ArrayList;
+
 import demo.doctor.com.doctor.R;
+import demo.doctor.com.doctor.shezhi.bingli;
 import demo.doctor.com.doctor.wenzhen.MainActivity;
 
-public class daohangFrament extends Fragment implements View.OnClickListener{
-
+/**
+ * 首页的界面
+ */
+public class daohangFrament extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeFragment";
     private ImageView iv_back;//隐藏返回按钮
     private TextView title_tv;//标题
@@ -36,8 +41,8 @@ public class daohangFrament extends Fragment implements View.OnClickListener{
             R.drawable.shouye3,
             R.drawable.shouye4,
     };
-    private LinearLayout rl_firstpager;
-    private RelativeLayout rl_skin_daquan,skin_disease,rl_interpreta,rl_public_server,rl_health_cares;//首页
+
+    private RelativeLayout rl_skin_daquan,skin_disease;//首页
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,7 +52,6 @@ public class daohangFrament extends Fragment implements View.OnClickListener{
         return viewHome;
     }
 
-    @SuppressLint("WrongViewCast")
     private void initView(View viewHome) {
         iv_back = (ImageView) viewHome.findViewById(R.id.iv_back);
         title_tv = (TextView) viewHome.findViewById(R.id.title_tv);
@@ -55,10 +59,12 @@ public class daohangFrament extends Fragment implements View.OnClickListener{
         ll = (LinearLayout) viewHome.findViewById(R.id.ll);
 
         rl_skin_daquan = (RelativeLayout) viewHome.findViewById(R.id.rl_skin_daquan);
+        skin_disease = (RelativeLayout) viewHome.findViewById(R.id.skin_disease);
 
 
 
         rl_skin_daquan.setOnClickListener(this);
+        skin_disease.setOnClickListener(this);
 
 
     }
@@ -118,18 +124,18 @@ public class daohangFrament extends Fragment implements View.OnClickListener{
 
 
     class MyAdapter extends PagerAdapter {
-            @Override
-            public int getCount() {
-                return imageViewList.size();
-            }
+        @Override
+        public int getCount() {
+            return imageViewList.size();
+        }
 
-            @Override
-            public boolean isViewFromObject(View view, Object object) {
-                if (view == object) {
-                    return true;
-                } else
-                    return false;
-            }
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            if (view == object) {
+                return true;
+            } else
+                return false;
+        }
 
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
@@ -175,32 +181,15 @@ public class daohangFrament extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.rl_firstpager://疾病预诊
-                intent = new Intent(getContext(), MainActivity.class);
-                startActivity(intent);
-                break;
             case R.id.rl_skin_daquan://疾病大全
                 intent = new Intent(getContext(), MainActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.skin_disease://皮肤病自诊
-                intent = new Intent(getContext(), MainActivity.class);
+            case R.id.skin_disease://病例信息
+                intent = new Intent(getContext(), bingli.class);
+                intent.putExtra("name",functionActivity.getname());
                 startActivity(intent);
                 break;
-            case R.id.rl_interpreta://化验单解读
-                intent = new Intent(getContext(),MainActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.rl_public_server://公共卫生服务
-                intent = new Intent(getContext(), MainActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.rl_health_cares://养生保健
-//                ToastUtils.show(getContext(),"点击里养生保健");
-                intent = new Intent(getContext(), MainActivity.class);
-                startActivity(intent);
-                break;
-
         }
     }
 
@@ -216,4 +205,5 @@ public class daohangFrament extends Fragment implements View.OnClickListener{
         super.onPause();
         MobclickAgent.onPageEnd("MainScreen");
     }
+
 }
