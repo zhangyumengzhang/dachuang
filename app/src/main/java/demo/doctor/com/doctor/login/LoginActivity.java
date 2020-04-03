@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
 
 
-    private String url="http://192.168.0.105:8080/";
+    private String url="http://192.168.0.101:8080/";
 
     private String TAG = "ifu25";
 

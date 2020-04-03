@@ -28,7 +28,7 @@ public class informationActivity extends AppCompatActivity {
     String name,sgender,sage;
     TextView uname,gender,age;
     Button exit;
-    private String url = "http://192.168.0.105:8080/";
+    private static String url = "http://192.168.0.101:8080/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent=getIntent();
@@ -55,7 +55,7 @@ public class informationActivity extends AppCompatActivity {
         });
     }
 
-    private void startThread() {
+    public  void startThread() {
         Thread t1=new Thread(new Runnable() {
             @Override
             public void run() {
@@ -88,7 +88,7 @@ public class informationActivity extends AppCompatActivity {
         }
     }
 
-    protected void parseWithJSON(String response) {
+    protected  void parseWithJSON(String response) {
         try {
             JSONObject jsonObject1 = new JSONObject(response);
             sgender = jsonObject1.getString("gender");

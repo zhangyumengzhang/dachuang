@@ -3,6 +3,9 @@ package demo.doctor.com.doctor.login;
 import android.content.Intent;
 import android.os.CountDownTimer;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,12 +22,13 @@ import cn.smssdk.SMSSDK;
 import demo.doctor.com.doctor.R;
 
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     public EventHandler eh; //事件接收器
     private TimeCount mTimeCount;//计时器
     private EditText et_register_auth_code,et_register_username;
     private TextView tv_register_sms_call,tv_protocol;
+    private Button bt_register_submit;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         et_register_username=findViewById(R.id.et_register_username);
         tv_register_sms_call=findViewById(R.id.tv_register_sms_call);
         tv_protocol=findViewById(R.id.tv_protocol);
+        bt_register_submit=findViewById(R.id.bt_register_submit);
         findViewById(R.id.ib_navigation_back).setOnClickListener(this);
         findViewById(R.id.bt_register_submit).setOnClickListener(this);
         findViewById(R.id.tv_register_sms_call).setOnClickListener(this);
@@ -154,4 +159,43 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             tv_register_sms_call.setText("获取验证码");
         }
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+
+    public void afterTextChanged(Editable s) {
+
+        String username = et_register_username.getText().toString().trim();
+
+        String pwd = et_register_auth_code.getText().toString().trim();
+
+
+        //登录按钮是否可用
+
+        if (!TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(username)) {
+
+            bt_register_submit.setBackgroundResource(R.drawable.bg_login_submit);
+
+            bt_register_submit.setTextColor(getResources().getColor(R.color.white));
+
+        } else {
+
+            bt_register_submit.setBackgroundResource(R.drawable.bg_login_submit_lock);
+
+            bt_register_submit.setTextColor(getResources().getColor(R.color.account_lock_font_color));
+
+        }
+
+    }
+
+
 }

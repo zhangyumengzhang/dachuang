@@ -69,7 +69,7 @@ public class functionActivity extends BaseFragmentActivity implements
                 hideAllFragment();// 隐藏所有fragment
                 if (homepageFragment == null) {
                     homepageFragment = new daohangFrament();
-                    addFragment(R.id.content, homepageFragment);
+                    addFragment(R.id.time, homepageFragment);
                 } else {
                     showFragment(homepageFragment);
                 }
@@ -84,7 +84,7 @@ public class functionActivity extends BaseFragmentActivity implements
                 hideAllFragment();// 隐藏所有fragment
                 if (meFragment == null) {
                     meFragment = new setFragment();
-                    addFragment(R.id.content, meFragment);
+                    addFragment(R.id.time, meFragment);
                 } else {
                     showFragment(meFragment);
                 }

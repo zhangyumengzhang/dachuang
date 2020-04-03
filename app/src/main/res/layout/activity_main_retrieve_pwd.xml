@@ -81,14 +81,13 @@
             android:background="@color/login_line_color" />
 
 
-
         <EditText
 
             android:id="@+id/et_retrieve_tel"
 
             android:layout_width="0dp"
 
-            android:layout_height="match_parent"
+            android:layout_height="84dp"
 
             android:layout_weight="1"
 

@@ -2,15 +2,10 @@ package demo.doctor.com.doctor.shezhi;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,9 +23,10 @@ import java.util.List;
 import java.util.Map;
 
 import demo.doctor.com.doctor.R;
+import demo.doctor.com.doctor.wenzhen.MainActivity;
 
 public class bingli extends Activity {
-    private String url = "http://192.168.0.105:8080/";
+    private String url = "http://192.168.0.101:8080/";
     private ListView listView;
     String name;
 
@@ -84,17 +80,19 @@ public class bingli extends Activity {
                 String token = jsonobj.getString("name");
                 String time = jsonobj.getString("time");
                 String result = jsonobj.getString("result");
+                String content = jsonobj.getString("content");
                 Log.d("MainActivity", "name=  " + token+ "   time=" + time + "\n");
-                String content=time+"\r\n"+result;
+                String allcontent=content+"\r\n"+result;
                 map = new HashMap<String, Object>();
                 map.put("name", token);
-                map.put("content", content);
+                map.put("time", time);
+                map.put("content", allcontent);
                 list.add(map);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.card_item, new String[]{"name","content",}, new int[]{R.id.name,R.id.content}
+        SimpleAdapter adapter = new SimpleAdapter(this, list, R.layout.card_item, new String[]{"name","time","content",}, new int[]{R.id.name,R.id.time,R.id.content}
 
         );
         adapter.notifyDataSetChanged();

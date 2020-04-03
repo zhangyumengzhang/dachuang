@@ -4,8 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import android.os.CountDownTimer;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,13 +25,14 @@ import cn.smssdk.SMSSDK;
 import demo.doctor.com.doctor.R;
 
 
-public class ForgetPwdActivity extends AppCompatActivity implements View.OnClickListener{
+public class ForgetPwdActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
 
     public EventHandler eh; //事件接收器
     private TimeCount Count;//计时器
     private EditText et_retrieve_tel,et_retrieve_code_input;
     private TextView retrieve_sms_call;
     private String name;
+    private Button bt_retrieve_submit;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,7 @@ public class ForgetPwdActivity extends AppCompatActivity implements View.OnClick
         et_retrieve_code_input=findViewById(R.id.et_retrieve_code_input);
         retrieve_sms_call=findViewById(R.id.retrieve_sms_call);
         retrieve_sms_call.setOnClickListener(this);
+        bt_retrieve_submit=findViewById(R.id.bt_retrieve_submit);
         findViewById(R.id.ib_navigation_back).setOnClickListener(this);
         findViewById(R.id.bt_retrieve_submit).setOnClickListener(this);
         init();
@@ -133,6 +139,41 @@ public class ForgetPwdActivity extends AppCompatActivity implements View.OnClick
         super.onDestroy();
         SMSSDK.unregisterEventHandler(eh);
     }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String username = et_retrieve_tel.getText().toString().trim();
+
+        String pwd = et_retrieve_code_input.getText().toString().trim();
+
+        //登录按钮是否可用
+
+        if (!TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(username)) {
+
+            bt_retrieve_submit.setBackgroundResource(R.drawable.bg_login_submit);
+
+            bt_retrieve_submit.setTextColor(getResources().getColor(R.color.white));
+
+        } else {
+
+            bt_retrieve_submit.setBackgroundResource(R.drawable.bg_login_submit_lock);
+
+            bt_retrieve_submit.setTextColor(getResources().getColor(R.color.account_lock_font_color));
+
+        }
+
+    }
+
     /**
      * 计时器
      */

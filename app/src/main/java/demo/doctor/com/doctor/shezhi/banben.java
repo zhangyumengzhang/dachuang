@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import demo.doctor.com.doctor.R;
-import demo.doctor.com.doctor.shouye.Mydialog;
 import demo.doctor.com.doctor.shouye.setFragment;
 
 public class banben extends AppCompatActivity {

@@ -7,8 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import java.io.BufferedReader;
@@ -21,10 +25,11 @@ import java.net.URL;
 
 import demo.doctor.com.doctor.R;
 
-public class resetpwd extends AppCompatActivity implements View.OnClickListener{
+public class resetpwd extends AppCompatActivity implements View.OnClickListener, TextWatcher {
     String name,password;
     EditText edpwd,etname;
-    private String url="http://192.168.43.177:8080/";
+    Button bt_reset_submit;
+    private String url="http://192.168.0.101:8080/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent=getIntent();
@@ -34,6 +39,7 @@ public class resetpwd extends AppCompatActivity implements View.OnClickListener{
         edpwd=findViewById(R.id.et_reset_pwd);
         etname=findViewById(R.id.et_reset_username);
         etname.setText(name);
+        bt_reset_submit=findViewById(R.id.bt_reset_submit);
         findViewById(R.id.ib_navigation_back).setOnClickListener(this);
         findViewById(R.id.bt_reset_submit).setOnClickListener(this);
     }
@@ -112,5 +118,39 @@ public class resetpwd extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String username = etname.getText().toString().trim();
+
+        String pwd = edpwd.getText().toString().trim();
+
+        //登录按钮是否可用
+
+        if (!TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(username)) {
+
+            bt_reset_submit.setBackgroundResource(R.drawable.bg_login_submit);
+
+            bt_reset_submit.setTextColor(getResources().getColor(R.color.white));
+
+        } else {
+
+            bt_reset_submit.setBackgroundResource(R.drawable.bg_login_submit_lock);
+
+            bt_reset_submit.setTextColor(getResources().getColor(R.color.account_lock_font_color));
+
+        }
+
     }
 }
