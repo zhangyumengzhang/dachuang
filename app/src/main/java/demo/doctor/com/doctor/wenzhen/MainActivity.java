@@ -4077,7 +4077,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -4160,7 +4160,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -4243,7 +4243,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -4326,7 +4326,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -4919,7 +4919,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -4976,7 +4976,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -5040,14 +5040,197 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     chat10.type=1;
                     chat10.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
                     mAdapter.addData(chat10);
-                    List<String> list = new ArrayList();
-                    list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(uresult));
+                    if (uresult.contains("风热感冒")) {
+                        String jutiresult="风热感冒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-                    for(int i=0;i<list.size();i++){
-                        Chat chatmedic=new Chat();
-                        chatmedic.type=1;
-                        chatmedic.content=list.get(i);
-                        mAdapter.addData(chatmedic);
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("风寒感冒")){
+                        String jutiresult="风寒感冒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("急性支气管炎")){
+                        String jutiresult="急性支气管炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("慢性支气管炎")){
+                        String jutiresult="慢性支气管炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("胃十二指肠溃疡")){
+                        String jutiresult="胃十二指肠溃疡";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("慢性胃炎")){
+                        String jutiresult="慢性胃炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("急性腹泻")){
+                        String jutiresult="急性腹泻";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("便秘")){
+                        String jutiresult="便秘";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("低血糖")){
+                        String jutiresult="低血糖";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("类风湿、风湿")){
+                        String jutiresult="类风湿、风湿";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("痛经、月经不调")){
+                        String jutiresult="痛经、月经不调";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("偏头痛")){
+                        String jutiresult="偏头痛";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("上呼吸道感染")){
+                        String jutiresult="上呼吸道感染";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("颈椎病")){
+                        String jutiresult="颈椎病";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("外伤")){
+                        String jutiresult="外伤";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("食物中毒")){
+                        String jutiresult="食物中毒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
                     }
                     i=0;
                 }
@@ -5344,7 +5527,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -5401,7 +5584,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -5460,14 +5643,197 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     chat13.type=1;
                     chat13.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
                     mAdapter.addData(chat13);
-                    List<String> list = new ArrayList();
-                    list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(uresult));
+                    if (uresult.contains("风热感冒")) {
+                        String jutiresult="风热感冒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-                    for(int i=0;i<list.size();i++){
-                        Chat chatmedic=new Chat();
-                        chatmedic.type=1;
-                        chatmedic.content=list.get(i);
-                        mAdapter.addData(chatmedic);
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("风寒感冒")){
+                        String jutiresult="风寒感冒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("急性支气管炎")){
+                        String jutiresult="急性支气管炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("慢性支气管炎")){
+                        String jutiresult="慢性支气管炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("胃十二指肠溃疡")){
+                        String jutiresult="胃十二指肠溃疡";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("慢性胃炎")){
+                        String jutiresult="慢性胃炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("急性腹泻")){
+                        String jutiresult="急性腹泻";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("便秘")){
+                        String jutiresult="便秘";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("低血糖")){
+                        String jutiresult="低血糖";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("类风湿、风湿")){
+                        String jutiresult="类风湿、风湿";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("痛经、月经不调")){
+                        String jutiresult="痛经、月经不调";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("偏头痛")){
+                        String jutiresult="偏头痛";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("上呼吸道感染")){
+                        String jutiresult="上呼吸道感染";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("颈椎病")){
+                        String jutiresult="颈椎病";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("外伤")){
+                        String jutiresult="外伤";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("食物中毒")){
+                        String jutiresult="食物中毒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
                     }
                     i=0;
                     mVals.clear();
@@ -9180,7 +9546,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -9263,7 +9629,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -9346,7 +9712,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -9429,7 +9795,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -10022,7 +10388,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -10079,7 +10445,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -10143,15 +10509,199 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     chat10.type=1;
                     chat10.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
                     mAdapter.addData(chat10);
-                    List<String> list = new ArrayList();
-                    list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(uresult));
+                    if (uresult.contains("风热感冒")) {
+                        String jutiresult="风热感冒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-                    for(int i=0;i<list.size();i++){
-                        Chat chatmedic=new Chat();
-                        chatmedic.type=1;
-                        chatmedic.content=list.get(i);
-                        mAdapter.addData(chatmedic);
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
                     }
+                    if(uresult.contains("风寒感冒")){
+                        String jutiresult="风寒感冒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("急性支气管炎")){
+                        String jutiresult="急性支气管炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("慢性支气管炎")){
+                        String jutiresult="慢性支气管炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("胃十二指肠溃疡")){
+                        String jutiresult="胃十二指肠溃疡";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("慢性胃炎")){
+                        String jutiresult="慢性胃炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("急性腹泻")){
+                        String jutiresult="急性腹泻";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("便秘")){
+                        String jutiresult="便秘";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("低血糖")){
+                        String jutiresult="低血糖";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("类风湿、风湿")){
+                        String jutiresult="类风湿、风湿";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("痛经、月经不调")){
+                        String jutiresult="痛经、月经不调";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("偏头痛")){
+                        String jutiresult="偏头痛";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("上呼吸道感染")){
+                        String jutiresult="上呼吸道感染";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("颈椎病")){
+                        String jutiresult="颈椎病";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("外伤")){
+                        String jutiresult="外伤";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("食物中毒")){
+                        String jutiresult="食物中毒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+
                     i=0;
                 }
                 mVals.clear();
@@ -10447,7 +10997,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -10504,7 +11054,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                 java.text.SimpleDateFormat sdf =
                                         new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                                 String currentTime = sdf.format(dt);
-                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult;
+                                String path = url + "charu?name=" + name+"&time="+currentTime+"&result="+uresult+"&content="+content;
                                 try {
                                     URL url = new URL(path); //新建url并实例化
                                     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -10563,14 +11113,197 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     chat13.type=1;
                     chat13.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
                     mAdapter.addData(chat13);
-                    List<String> list = new ArrayList();
-                    list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(uresult));
+                    if (uresult.contains("风热感冒")) {
+                        String jutiresult="风热感冒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-                    for(int i=0;i<list.size();i++){
-                        Chat chatmedic=new Chat();
-                        chatmedic.type=1;
-                        chatmedic.content=list.get(i);
-                        mAdapter.addData(chatmedic);
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("风寒感冒")){
+                        String jutiresult="风寒感冒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("急性支气管炎")){
+                        String jutiresult="急性支气管炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("慢性支气管炎")){
+                        String jutiresult="慢性支气管炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("胃十二指肠溃疡")){
+                        String jutiresult="胃十二指肠溃疡";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("慢性胃炎")){
+                        String jutiresult="慢性胃炎";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("急性腹泻")){
+                        String jutiresult="急性腹泻";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("便秘")){
+                        String jutiresult="便秘";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("低血糖")){
+                        String jutiresult="低血糖";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("类风湿、风湿")){
+                        String jutiresult="类风湿、风湿";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("痛经、月经不调")){
+                        String jutiresult="痛经、月经不调";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("偏头痛")){
+                        String jutiresult="偏头痛";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("上呼吸道感染")){
+                        String jutiresult="上呼吸道感染";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("颈椎病")){
+                        String jutiresult="颈椎病";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("外伤")){
+                        String jutiresult="外伤";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
+                    }
+                    if(uresult.contains("食物中毒")){
+                        String jutiresult="食物中毒";
+                        List<String> list = new ArrayList();
+                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                        for(int i=0;i<list.size();i++){
+                            Chat chatmedic=new Chat();
+                            chatmedic.type=1;
+                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                            mAdapter.addData(chatmedic);
+                        }
                     }
                     i=0;
                     mVals.clear();
@@ -10657,15 +11390,197 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         mVals.add("头痛是怎么回事");
         mVals.add("咳嗽是怎么回事");
 
-        List<String> list = new ArrayList();
-        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(uresult));
+        if (uresult.contains("风热感冒")) {
+            String jutiresult="风热感冒";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-        for(int i=0;i<list.size();i++){
-            Chat chatmedic=new Chat();
-            chatmedic.type=1;
-            chatmedic.content=list.get(i);
-            mAdapter.addData(chatmedic);
-            mVals.clear();
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("风寒感冒")){
+            String jutiresult="风寒感冒";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("急性支气管炎")){
+            String jutiresult="急性支气管炎";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("慢性支气管炎")){
+            String jutiresult="慢性支气管炎";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("胃十二指肠溃疡")){
+            String jutiresult="胃十二指肠溃疡";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("慢性胃炎")){
+            String jutiresult="慢性胃炎";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("急性腹泻")){
+            String jutiresult="急性腹泻";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("便秘")){
+            String jutiresult="便秘";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("低血糖")){
+            String jutiresult="低血糖";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("类风湿、风湿")){
+            String jutiresult="类风湿、风湿";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("痛经、月经不调")){
+            String jutiresult="痛经、月经不调";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("偏头痛")){
+            String jutiresult="偏头痛";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("上呼吸道感染")){
+            String jutiresult="上呼吸道感染";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("颈椎病")){
+            String jutiresult="颈椎病";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("外伤")){
+            String jutiresult="外伤";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("食物中毒")){
+            String jutiresult="食物中毒";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
         }
         i=0;
         issend=false;
@@ -10735,16 +11650,197 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         mVals.clear();
         mVals.add("头痛是怎么回事");
         mVals.add("咳嗽是怎么回事");
+        if (uresult.contains("风热感冒")) {
+            String jutiresult="风热感冒";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-        List<String> list = new ArrayList();
-        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(uresult));
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("风寒感冒")){
+            String jutiresult="风寒感冒";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-        for(int i=0;i<list.size();i++){
-            Chat chatmedic=new Chat();
-            chatmedic.type=1;
-            chatmedic.content=list.get(i);
-            mAdapter.addData(chatmedic);
-            mVals.clear();
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("急性支气管炎")){
+            String jutiresult="急性支气管炎";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("慢性支气管炎")){
+            String jutiresult="慢性支气管炎";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("胃十二指肠溃疡")){
+            String jutiresult="胃十二指肠溃疡";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("慢性胃炎")){
+            String jutiresult="慢性胃炎";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("急性腹泻")){
+            String jutiresult="急性腹泻";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("便秘")){
+            String jutiresult="便秘";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("低血糖")){
+            String jutiresult="低血糖";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("类风湿、风湿")){
+            String jutiresult="类风湿、风湿";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("痛经、月经不调")){
+            String jutiresult="痛经、月经不调";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("偏头痛")){
+            String jutiresult="偏头痛";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("上呼吸道感染")){
+            String jutiresult="上呼吸道感染";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("颈椎病")){
+            String jutiresult="颈椎病";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("外伤")){
+            String jutiresult="外伤";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
+        }
+        if(uresult.contains("食物中毒")){
+            String jutiresult="食物中毒";
+            List<String> list = new ArrayList();
+            list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+            for(int i=0;i<list.size();i++){
+                Chat chatmedic=new Chat();
+                chatmedic.type=1;
+                chatmedic.content=jutiresult+"\r\n" +list.get(i);
+                mAdapter.addData(chatmedic);
+            }
         }
         i=0;
         issend=false;
