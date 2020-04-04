@@ -450,7 +450,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=a+"\r\n"+question2+"   ";
+                    content=a+"<br>"+question2+"   ";
                     chat2.type = 1;
                     mAdapter.addData(chat2);
                     mVals.clear();
@@ -546,7 +546,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
 
                     if(issend){
-                        content=content+"\r\n"+question3+"   ";
+                        content=content+"<br>"+question3+"   ";
                         chat3.type = 1;
                         mAdapter.addData(chat3);
                         mVals.clear();
@@ -909,7 +909,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question4+"   ";
+                    content=content+"<br>"+question4+"   ";
                     chat4.type = 1;
                     Log.d("MainActivity", "hahahh" + chat4.content);
                     mAdapter.addData(chat4);
@@ -1488,7 +1488,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question5+"   ";
+                    content=content+"<br>"+question5+"   ";
                     chat5.type = 1;
                     mAdapter.addData(chat5);
                     mVals.clear();
@@ -2255,7 +2255,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                      }
                 }
                 if(issend){
-                    content=content+"\r\n"+question6+"   ";
+                    content=content+"<br>"+question6+"   ";
                     chat6.type = 1;
                     mAdapter.addData(chat6);
                     mVals.clear();
@@ -3144,7 +3144,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question7+"   ";
+                    content=content+"<br>"+question7+"   ";
                     chat7.type = 1;
                     mAdapter.addData(chat7);
                     mVals.clear();
@@ -4055,7 +4055,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question8+"   ";
+                    content=content+"<br>"+question8+"   ";
                     chat8.type = 1;
                     mAdapter.addData(chat8);
                     mVals.clear();
@@ -4772,7 +4772,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question9+"   ";
+                    content=content+"<br>"+question9+"   ";
                     chat9.type = 1;
                     mAdapter.addData(chat9);
                     mVals.clear();
@@ -5032,7 +5032,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             }
 
                 if(answer1=="腹痛"){
-                    content=content+"\r\n"+question10+"   ";
+                    content=content+"<br>"+question10+"   ";
                     chat10.type = 1;
                     mAdapter.addData(chat10);
                 }
@@ -5367,7 +5367,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                 }
                 if(issend){
-                    content=content+"\r\n"+question11+"   ";
+                    content=content+"<br>"+question11+"   ";
                     chat11.type = 1;
                     mAdapter.addData(chat11);
                     mVals.clear();
@@ -5503,7 +5503,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                 }
                 if(issend){
-                    content=content+"\r\n"+question12+"   ";
+                    content=content+"<br>"+question12+"   ";
                     chat12.type = 1;
                     mAdapter.addData(chat12);
                     mVals.clear();
@@ -6015,7 +6015,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     mVals2.add("否");
                 }
                 if(issend){
-                    content=a+"\r\n"+question2+"   ";
+                    content=a+"<br>"+question2+"   ";
                     chat2.type = 1;
                     mAdapter.addData(chat2);
                     mVals.clear();
@@ -6378,7 +6378,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question3+"   ";
+                    content=content+"<br>"+question3+"   ";
                     chat4.type = 1;
                     Log.d("MainActivity", "hahahh" + chat4.content);
                     mAdapter.addData(chat4);
@@ -6957,7 +6957,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question4+"   ";
+                    content=content+"<br>"+question4+"   ";
                     chat5.type = 1;
                     mAdapter.addData(chat5);
                     mVals.clear();
@@ -6989,7 +6989,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                                         Log.d("MainActivity", "run: " + result);
                                         if (result != null) {
-                                            chat6.content = question4 = result;
+                                            chat6.content = question5 = result;
                                         }
                                     } catch (IOException e) {
                                         e.printStackTrace();
@@ -7724,7 +7724,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                 }
                 if(issend){
-                    content=content+"\r\n"+question5+"   ";
+                    content=content+"<br>"+question5+"   ";
                     chat6.type = 1;
                     mAdapter.addData(chat6);
                     mVals.clear();
@@ -8613,7 +8613,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question6+"   ";
+                    content=content+"<br>"+question6+"   ";
                     chat7.type = 1;
                     mAdapter.addData(chat7);
                     mVals.clear();
@@ -9524,7 +9524,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question7+"   ";
+                    content=content+"<br>"+question7+"   ";
                     chat8.type = 1;
                     mAdapter.addData(chat8);
                     mVals.clear();
@@ -10241,7 +10241,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(issend){
-                    content=content+"\r\n"+question8+"   ";
+                    content=content+"<br>"+question8+"   ";
                     chat9.type = 1;
                     mAdapter.addData(chat9);
                     mVals.clear();
@@ -10501,7 +10501,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
 
                 if(answer1=="腹痛"){
-                    content=content+"\r\n"+question9+"   ";
+                    content=content+"<br>"+question9+"   ";
                     chat10.type = 1;
                     mAdapter.addData(chat10);
                 }
@@ -10837,7 +10837,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                 }
                 if(issend){
-                    content=content+"\r\n"+question10+"   ";
+                    content=content+"<br>"+question10+"   ";
                     chat11.type = 1;
                     mAdapter.addData(chat11);
                     mVals.clear();
@@ -10973,7 +10973,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                 }
                 if(issend){
-                    content=content+"\r\n"+question11+"   ";
+                    content=content+"<br>"+question11+"   ";
                     chat12.type = 1;
                     mAdapter.addData(chat12);
                     mVals.clear();

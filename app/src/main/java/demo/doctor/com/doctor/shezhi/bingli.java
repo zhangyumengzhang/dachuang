@@ -82,7 +82,12 @@ public class bingli extends Activity {
                 String result = jsonobj.getString("result");
                 String content = jsonobj.getString("content");
                 Log.d("MainActivity", "name=  " + token+ "   time=" + time + "\n");
-                String allcontent=content+"\r\n"+result;
+                String[] chrstr = content.split("<br>");
+                String allcontent="";
+                for(int j=0;j<chrstr.length;j++) {
+                    allcontent =allcontent+chrstr[j] + "\r\n";
+                }
+                allcontent =allcontent+"\r\n"+result;
                 map = new HashMap<String, Object>();
                 map.put("name", token);
                 map.put("time", time);
