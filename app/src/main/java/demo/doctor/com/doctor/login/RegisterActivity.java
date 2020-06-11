@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,13 +23,14 @@ import cn.smssdk.SMSSDK;
 import demo.doctor.com.doctor.R;
 
 
-public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
 
     public EventHandler eh; //事件接收器
     private TimeCount mTimeCount;//计时器
     private EditText et_register_auth_code,et_register_username;
     private TextView tv_register_sms_call,tv_protocol;
     private Button bt_register_submit;
+    private CheckBox cb_protocol;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +43,15 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         et_register_username=findViewById(R.id.et_register_username);
         tv_register_sms_call=findViewById(R.id.tv_register_sms_call);
         tv_protocol=findViewById(R.id.tv_protocol);
-        bt_register_submit=findViewById(R.id.bt_register_submit);
+        bt_register_submit=findViewById(R.id.bt_register_submit_two);
         findViewById(R.id.ib_navigation_back).setOnClickListener(this);
-        findViewById(R.id.bt_register_submit).setOnClickListener(this);
+        findViewById(R.id.bt_register_submit_two).setOnClickListener(this);
         findViewById(R.id.tv_register_sms_call).setOnClickListener(this);
+
+        et_register_username.addTextChangedListener(this);
+
+        tv_register_sms_call.addTextChangedListener(this);
+        cb_protocol=findViewById(R.id.cb_protocol);
         init();
     }
     /**
@@ -98,7 +105,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                     Toast.makeText(RegisterActivity.this, "请输入手机号码", Toast.LENGTH_SHORT).show();
                 }
                 break;
-            case R.id.bt_register_submit:
+            case R.id.bt_register_submit_two:
                 if (!et_register_username.getText().toString().trim().equals("")) {
                     if (checkTel(et_register_username.getText().toString().trim())) {
                         if (!et_register_auth_code.getText().toString().trim().equals("")) {
@@ -138,6 +145,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         super.onDestroy();
         SMSSDK.unregisterEventHandler(eh);
     }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+
+    }
+
     /**
      * 计时器
      */
@@ -179,9 +192,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String pwd = et_register_auth_code.getText().toString().trim();
 
 
-        //登录按钮是否可用
+        //注册按钮是否可用
 
-        if (!TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(username)) {
+        if (!TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(username)&&cb_protocol.isChecked()) {
 
             bt_register_submit.setBackgroundResource(R.drawable.bg_login_submit);
 

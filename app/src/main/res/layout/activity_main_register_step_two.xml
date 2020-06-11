@@ -279,26 +279,25 @@
             android:layout_weight="1" />
 
 
-
         <TextView
 
             android:id="@+id/tv_register_man"
 
             android:layout_width="wrap_content"
 
-            android:layout_height="44dp"
+            android:layout_height="22dp"
 
             android:drawableLeft="@mipmap/btn_gender_male_normal"
 
             android:drawablePadding="8dp"
+
+            android:focusable="false"
 
             android:gravity="center_vertical"
 
             android:text="@string/register_man_hint"
 
             android:textColor="@color/textcolor_selector"
-
-            android:focusable="false"
 
             tools:ignore="RtlHardcoded" />
 
@@ -453,7 +452,7 @@
 
     <Button
 
-        android:id="@+id/bt_register_submit"
+        android:id="@+id/bt_register_submit_two"
 
         android:layout_width="match_parent"
 

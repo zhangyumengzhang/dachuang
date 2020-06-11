@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 public class yaopinActivity {
-    private static  String url = "http://192.168.0.101:8080/";
+    private static  String url = "http://123.56.175.138:8080/";
    static  List<String> list = new ArrayList();
     static String response;
     public static String getyaopininfo(final String result) {

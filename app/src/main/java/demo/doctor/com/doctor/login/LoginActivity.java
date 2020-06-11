@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
 
 
-    private String url="http://192.168.0.101:8080/";
+    private String url="http://123.56.175.138:8080/";
 
     private String TAG = "ifu25";
 
@@ -331,6 +331,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
                     Log.d("MainActivity","run: "+result);
+                    Log.d("MainActivity","run: "+path);
                     if (result.equals("登录成功")){
                         Intent i=new Intent(LoginActivity.this, functionActivity.class);
                         i.putExtra("name",mEtLoginUsername.getText().toString());

@@ -26,29 +26,43 @@ import java.net.URL;
 
 import demo.doctor.com.doctor.R;
 
-public class RegistertwoActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+public class RegistertwoActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
     TextView female, man;
     String gender, name, password, age;
     EditText etname, etpassword, etage;
-    private Button bt_register_submit;
-    private String url = "http://192.168.0.101:8080/";
+    private Button bt_register_submit_two;
+    private String url = "http://123.56.175.138:8080/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_register_step_two);
+
         findViewById(R.id.ib_navigation_back).setOnClickListener(this);
+
         female = findViewById(R.id.tv_register_female);
+
         female.setOnClickListener(this);
+
         man = findViewById(R.id.tv_register_man);
+
         man.setOnClickListener(this);
+
         etname = findViewById(R.id.et_register_username);
-        etname.setOnClickListener(this);
+
+      //  etname.setOnClickListener(this);
         etpassword = findViewById(R.id.et_register_pwd_input);
-        etpassword.setOnClickListener(this);
+       // etpassword.setOnClickListener(this);
         etage = findViewById(R.id.et_register_age_input);
-        etage.setOnClickListener(this);
-        findViewById(R.id.bt_register_submit).setOnClickListener(this);
+      //  etage.setOnClickListener(this);
+        bt_register_submit_two= findViewById(R.id.bt_register_submit_two);
+        bt_register_submit_two.setOnClickListener(this);
+
+        etname.addTextChangedListener(this);
+
+        etpassword.addTextChangedListener(this);
+
+        etage.addTextChangedListener(this);
 
     }
 
@@ -57,24 +71,22 @@ public class RegistertwoActivity extends AppCompatActivity implements View.OnCli
         switch (v.getId()) {
             case R.id.tv_register_female:
                 if (female.isSelected()) {
-
                     female.setSelected(false);
-
+                    man.setClickable(true);
                 } else {
-
                     female.setSelected(true);
-                    gender = "female";
+                    man.setClickable(false);
+                    gender = "女";
                 }
                 break;
             case R.id.tv_register_man:
                 if (man.isSelected()) {
-
                     man.setSelected(false);
-
+                    female.setClickable(true);
                 } else {
-
                     man.setSelected(true);
-                    gender = "man";
+                    female.setClickable(false);
+                    gender = "男";
                 }
                 break;
             case R.id.ib_navigation_back:
@@ -82,7 +94,7 @@ public class RegistertwoActivity extends AppCompatActivity implements View.OnCli
                 finish();
 
                 break;
-            case R.id.bt_register_submit:
+            case R.id.bt_register_submit_two:
 
                 name = etname.getText().toString();
                 password = etpassword.getText().toString();
@@ -157,17 +169,22 @@ public class RegistertwoActivity extends AppCompatActivity implements View.OnCli
 
         if (!TextUtils.isEmpty(pwd) && !TextUtils.isEmpty(username) && !TextUtils.isEmpty(age)) {
 
-            bt_register_submit.setBackgroundResource(R.drawable.bg_login_submit);
+            bt_register_submit_two.setBackgroundResource(R.drawable.bg_login_submit);
 
-            bt_register_submit.setTextColor(getResources().getColor(R.color.white));
+            bt_register_submit_two.setTextColor(getResources().getColor(R.color.white));
 
         } else {
 
-            bt_register_submit.setBackgroundResource(R.drawable.bg_login_submit_lock);
+            bt_register_submit_two.setBackgroundResource(R.drawable.bg_login_submit_lock);
 
-            bt_register_submit.setTextColor(getResources().getColor(R.color.account_lock_font_color));
+            bt_register_submit_two.setTextColor(getResources().getColor(R.color.account_lock_font_color));
 
         }
+
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
 
     }
 }

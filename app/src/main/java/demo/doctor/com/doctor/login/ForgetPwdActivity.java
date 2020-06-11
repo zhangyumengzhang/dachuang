@@ -25,7 +25,7 @@ import cn.smssdk.SMSSDK;
 import demo.doctor.com.doctor.R;
 
 
-public class ForgetPwdActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+public class ForgetPwdActivity extends AppCompatActivity implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
 
     public EventHandler eh; //事件接收器
     private TimeCount Count;//计时器
@@ -37,17 +37,33 @@ public class ForgetPwdActivity extends AppCompatActivity implements View.OnClick
 
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent=getIntent();
+
         name=intent.getStringExtra("name");
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main_retrieve_pwd);
+
         Count = new TimeCount(60000, 1000);
+
         et_retrieve_tel=findViewById(R.id.et_retrieve_tel);
+
         et_retrieve_code_input=findViewById(R.id.et_retrieve_code_input);
+
         retrieve_sms_call=findViewById(R.id.retrieve_sms_call);
+
         retrieve_sms_call.setOnClickListener(this);
+
         bt_retrieve_submit=findViewById(R.id.bt_retrieve_submit);
+
         findViewById(R.id.ib_navigation_back).setOnClickListener(this);
+
         findViewById(R.id.bt_retrieve_submit).setOnClickListener(this);
+
+        et_retrieve_tel.addTextChangedListener(this);
+
+        et_retrieve_code_input.addTextChangedListener(this);
+
         init();
     }
 
@@ -171,6 +187,11 @@ public class ForgetPwdActivity extends AppCompatActivity implements View.OnClick
             bt_retrieve_submit.setTextColor(getResources().getColor(R.color.account_lock_font_color));
 
         }
+
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
 
     }
 

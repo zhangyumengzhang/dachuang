@@ -358,7 +358,7 @@
 
     <Button
 
-        android:id="@+id/bt_register_submit"
+        android:id="@+id/bt_register_submit_two"
 
         android:layout_width="match_parent"
 

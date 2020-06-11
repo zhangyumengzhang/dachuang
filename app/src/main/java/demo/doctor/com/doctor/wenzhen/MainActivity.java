@@ -51,7 +51,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
-    private String url = "http://192.168.0.101:8080/";
+    private String url = "http://123.56.175.138:8080/";
     List<Chat> chatList = new ArrayList<>();
     List<String> mVals = new ArrayList<>();
     List<String> mVals1 = new ArrayList<>();
@@ -150,10 +150,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 }
                 et.setText("");
                 if(issend) {
-                    if(gender.equals("man")){
+                    Log.d("MainActivity", "sex: " + gender);
+                    if(gender.equals("男")){
                         Log.d("MainActivity", "sex: " + gender);
                         sendChatman(s);
-                    }else if(gender.equals("female")){
+                    }else if(gender.equals("女")){
                         Log.d("MainActivity", "sex: " + gender);
                         sendChat(s);
                     }
@@ -178,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 String a = mVals.get(position);
                 if(issend) {
-                    if(gender.equals("man")){
+                    if(gender.equals("男")){
                         Log.d("MainActivity", "sex: " + gender);
                         sendChatman(a);
-                    }else if(gender.equals("female")){
+                    }else if(gender.equals("女")){
                         Log.d("MainActivity", "sex: " + gender);
                         sendChat(a);
                     }
@@ -210,10 +211,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             Toast.makeText(MainActivity.this, result, Toast.LENGTH_LONG).show();
                             if (!TextUtils.isEmpty(result)) {
                                 if(issend) {
-                                    if(gender.equals("man")){
+                                    if(gender.equals("男")){
                                         Log.d("MainActivity", "sex: " + gender);
                                         sendChatman(result);
-                                    }else if(gender.equals("female")){
+                                    }else if(gender.equals("女")){
                                         Log.d("MainActivity", "sex: " + gender);
                                         sendChat(result);
                                     }

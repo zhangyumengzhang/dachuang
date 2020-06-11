@@ -26,7 +26,7 @@ import demo.doctor.com.doctor.R;
 import demo.doctor.com.doctor.wenzhen.MainActivity;
 
 public class bingli extends Activity {
-    private String url = "http://192.168.0.101:8080/";
+    private String url = "http://123.56.175.138:8080/";
     private ListView listView;
     String name;
 

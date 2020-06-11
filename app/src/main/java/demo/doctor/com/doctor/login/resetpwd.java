@@ -25,11 +25,11 @@ import java.net.URL;
 
 import demo.doctor.com.doctor.R;
 
-public class resetpwd extends AppCompatActivity implements View.OnClickListener, TextWatcher {
+public class resetpwd extends AppCompatActivity implements View.OnClickListener, TextWatcher, View.OnFocusChangeListener {
     String name,password;
     EditText edpwd,etname;
     Button bt_reset_submit;
-    private String url="http://192.168.0.101:8080/";
+    private String url="http://123.56.175.138:8080/";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Intent intent=getIntent();
@@ -42,6 +42,12 @@ public class resetpwd extends AppCompatActivity implements View.OnClickListener,
         bt_reset_submit=findViewById(R.id.bt_reset_submit);
         findViewById(R.id.ib_navigation_back).setOnClickListener(this);
         findViewById(R.id.bt_reset_submit).setOnClickListener(this);
+
+
+        etname.addTextChangedListener(this);
+
+        edpwd.addTextChangedListener(this);
+
     }
 
     @Override
@@ -151,6 +157,11 @@ public class resetpwd extends AppCompatActivity implements View.OnClickListener,
             bt_reset_submit.setTextColor(getResources().getColor(R.color.account_lock_font_color));
 
         }
+
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
 
     }
 }
