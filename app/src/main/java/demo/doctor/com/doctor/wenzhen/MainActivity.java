@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
     List<String> mVals10 = new ArrayList<>();
     List<String> mVals11 = new ArrayList<>();
     List<String> mVals12 = new ArrayList<>();
+
     private ChatAdapter mAdapter;
     int i = 1;
     private TagFlowLayout mFlowLayout;
@@ -172,7 +173,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         chat.content = "欢迎使用晓智医疗，我是你的智能家庭医生☺，您可以简单的输入或直接语音告诉我您的症状，请问有什么可以帮助您";
         chat.type = 1;
         mAdapter.addData(chat);
-
 
         mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
@@ -443,6 +443,40 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         e.printStackTrace();
                     }
                 }
+                else if (a.contains("感冒")){
+                    answer1 = "感冒";
+                    mVals1.add("怀孕");
+                    mVals1.add("未怀孕");
+                    Thread t1= new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //记得修改IP地址
+                            String path = url + "question2?answer1=" + answer1;
+                            try {
+                                URL url = new URL(path); //新建url并实例化
+                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                connection.setRequestMethod("GET");//获取服务器数据
+                                connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                InputStream in = connection.getInputStream();
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                Log.d("MainActivity", "run: " + result);
+                                if (result != null) {
+                                    chat2.content = question2 = result;
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    try {
+                        t1.start();
+                        t1.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 else {
                     chat2.content = "非常抱歉，我现在还不能回答相关问题，您可以选择线下就医";
                     i=0;
@@ -475,6 +509,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         mVals2.add("是");
                         mVals2.add("否");
                     }
+                    else if(answer1=="感冒"){
+                    mVals2.add("出汗、头疼、鼻塞、乏力、 咳嗽有痰（黄稠）、头胀痛、低烧、咽喉肿痛、扁桃体发炎");
+                    mVals2.add("浑身酸痛、畏寒、鼻塞、流清鼻涕、咳嗽有痰（稀白）");
+                    }
+
                     if (a.contains("未怀孕") || a.contains("没有")) {
                         answer2 = "未怀孕";
                         Thread t1=new Thread(new Runnable() {
@@ -866,6 +905,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -908,7 +949,132 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         mVals3.add("咳嗽是怎么回事");
                     }
                 }
-
+                else if(answer1=="感冒"){
+                    if (a.contains("汗")||a.contains("头")||a.contains("力")||a.contains("黄")||a.contains("烧")||a.contains("喉")||a.contains("嗓子")||a.contains("扁桃体")) {
+                        answer3="出汗、头疼、鼻塞、乏力、 咳嗽有痰（黄稠）、头胀痛、低烧、咽喉肿痛、扁桃体发炎";
+                        final Thread t2=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid4?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id = Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question4?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat4.content = question4 = result;
+                                    }else{
+                                        t2.start();
+                                        t2.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if (a.contains("身") || a.contains("寒")||a.contains("冷")||a.contains("鼻涕")||a.contains("白")) {
+                        answer3="浑身酸痛、畏寒、鼻塞、流清鼻涕、咳嗽有痰（稀白）";
+                        final Thread t2=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionid4?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id = Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "question4?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat4.content = question4 = result;
+                                    }else{
+                                        t2.start();
+                                        t2.join();
+                                        getresult(id);
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        chat4.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals3.add("头痛是怎么回事");
+                        mVals3.add("咳嗽是怎么回事");
+                    }
+                }
                 if(issend){
                     content=content+"<br>"+question4+"   ";
                     chat4.type = 1;
@@ -1161,6 +1327,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -1417,6 +1585,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -2182,6 +2352,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                          try {
                              t1.start();
                              t1.join();
+                             mVals.clear();
+                             mFlowLayout.onChanged();
                          } catch (InterruptedException e) {
                              e.printStackTrace();
                          }
@@ -2244,6 +2416,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                          try {
                              t1.start();
                              t1.join();
+                             mVals.clear();
+                             mFlowLayout.onChanged();
                          } catch (InterruptedException e) {
                              e.printStackTrace();
                          }
@@ -2327,6 +2501,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                        try {
                            t1.start();
                            t1.join();
+                           mVals.clear();
+                           mFlowLayout.onChanged();
                        } catch (InterruptedException e) {
                            e.printStackTrace();
                        }
@@ -2390,6 +2566,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                        try {
                            t1.start();
                            t1.join();
+                           mVals.clear();
+                           mFlowLayout.onChanged();
                        } catch (InterruptedException e) {
                            e.printStackTrace();
                        }
@@ -2513,6 +2691,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                        try {
                            t1.start();
                            t1.join();
+                           mVals.clear();
+                           mFlowLayout.onChanged();
                        } catch (InterruptedException e) {
                            e.printStackTrace();
                        }
@@ -2571,6 +2751,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                        try {
                            t1.start();
                            t1.join();
+                           mVals.clear();
+                           mFlowLayout.onChanged();
                        } catch (InterruptedException e) {
                            e.printStackTrace();
                        }
@@ -2901,6 +3083,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                          try {
                              t1.start();
                              t1.join();
+                             mVals.clear();
+                             mFlowLayout.onChanged();
                          } catch (InterruptedException e) {
                              e.printStackTrace();
                          }
@@ -3276,6 +3460,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -3334,6 +3520,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -3354,7 +3542,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      InputStream in = connection.getInputStream();
                                      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
-                                     Log.d("MainActivity", "run: " + result);
+                                     Log.d("MainActivity", "runid7: " + result);
                                      if (result != null) {
                                          id = Integer.parseInt(result);
                                      }
@@ -3376,7 +3564,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      InputStream in = connection.getInputStream();
                                      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
-                                     Log.d("MainActivity", "run: " + result);
+                                     Log.d("MainActivity", "run7: " + result);
                                      if (result != null) {
                                          chat8.content = question8 = result;
                                      }else{
@@ -3392,12 +3580,14 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
                     else if(a.contains("手臂麻木、眩晕")){
-                        answer7="是";
+                        answer7="手臂麻木、眩晕";
                          final Thread t7=new Thread(new Runnable() {
                              @Override
                              public void run() {
@@ -3411,7 +3601,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      InputStream in = connection.getInputStream();
                                      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
-                                     Log.d("MainActivity", "run: " + result);
+                                     Log.d("MainActivity", "runid7: " + result);
                                      if (result != null) {
                                          id = Integer.parseInt(result);
                                      }
@@ -3433,7 +3623,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                      InputStream in = connection.getInputStream();
                                      BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                                      String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
-                                     Log.d("MainActivity", "run: " + result);
+                                     Log.d("MainActivity", "run7: " + result);
                                      if (result != null) {
                                          chat8.content = question8 = result;
                                      }else{
@@ -3449,6 +3639,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -3506,6 +3698,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -3563,6 +3757,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                          try {
                              t1.start();
                              t1.join();
+                             mVals.clear();
+                             mFlowLayout.onChanged();
                          } catch (InterruptedException e) {
                              e.printStackTrace();
                          }
@@ -3620,6 +3816,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                          try {
                              t1.start();
                              t1.join();
+                             mVals.clear();
+                             mFlowLayout.onChanged();
                          } catch (InterruptedException e) {
                              e.printStackTrace();
                          }
@@ -3857,6 +4055,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -3983,6 +4183,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4043,6 +4245,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4068,7 +4273,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 final Chat chat9 = new Chat();
                 content=content+a;
                 if(answer1=="头痛"){
-                    if(a.contains("麻")||a.contains("晕")){
+                    if(a.contains("麻")||a.contains("晕")||a.contains("是")){
                         answer8="手臂麻木、眩晕";
                         Thread tr = new Thread(new Runnable() {
                             @Override
@@ -4107,7 +4312,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                     InputStream in = connection.getInputStream();
                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
-                                    Log.d("MainActivity", "run: " + result);
+                                    Log.d("MainActivity", "runid8: " + result);
                                     if (result != null) {
                                         id=Integer.parseInt(result);
                                     }
@@ -4129,7 +4334,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                     InputStream in = connection.getInputStream();
                                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
                                     String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
-                                    Log.d("MainActivity", "run: " + result);
+                                    Log.d("MainActivity", "run8: " + result);
                                     if (result != null) {
                                         chat9.content = question9 = result;
                                     }else{
@@ -4147,6 +4352,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4230,6 +4437,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4313,6 +4522,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4396,6 +4607,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4463,6 +4676,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4520,6 +4735,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4587,6 +4804,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4646,6 +4865,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4703,6 +4924,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4760,6 +4983,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -4841,6 +5066,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     try {
                         t1.start();
                         t1.join();
+                        mVals.clear();
+                        mFlowLayout.onChanged();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -4898,6 +5125,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                       try {
                           t1.start();
                           t1.join();
+                          mVals.clear();
+                          mFlowLayout.onChanged();
                       } catch (InterruptedException e) {
                           e.printStackTrace();
                       }
@@ -4963,6 +5192,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -5020,6 +5251,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -5031,213 +5264,214 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     mVals9.add("咳嗽是怎么回事");
                 }
             }
+                if(issend) {
+                    if (answer1 == "腹痛") {
+                        content = content + "<br>" + question10 + "   ";
+                        chat10.type = 1;
+                        mAdapter.addData(chat10);
+                    } else if (answer1 == "咳嗽") {
+                        chat10.type = 1;
+                        chat10.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。" + "已将您此次问诊生成电子病历。";
+                        mAdapter.addData(chat10);
+                        if (uresult.contains("风热感冒")) {
+                            String jutiresult = "风热感冒";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-                if(answer1=="腹痛"){
-                    content=content+"<br>"+question10+"   ";
-                    chat10.type = 1;
-                    mAdapter.addData(chat10);
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("风寒感冒")) {
+                            String jutiresult = "风寒感冒";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("急性支气管炎")) {
+                            String jutiresult = "急性支气管炎";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("慢性支气管炎")) {
+                            String jutiresult = "慢性支气管炎";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("胃十二指肠溃疡")) {
+                            String jutiresult = "胃十二指肠溃疡";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("慢性胃炎")) {
+                            String jutiresult = "慢性胃炎";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("急性腹泻")) {
+                            String jutiresult = "急性腹泻";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("便秘")) {
+                            String jutiresult = "便秘";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("低血糖")) {
+                            String jutiresult = "低血糖";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("类风湿、风湿")) {
+                            String jutiresult = "类风湿、风湿";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("痛经、月经不调")) {
+                            String jutiresult = "痛经、月经不调";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("偏头痛")) {
+                            String jutiresult = "偏头痛";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("上呼吸道感染")) {
+                            String jutiresult = "上呼吸道感染";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("颈椎病")) {
+                            String jutiresult = "颈椎病";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("外伤")) {
+                            String jutiresult = "外伤";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("食物中毒")) {
+                            String jutiresult = "食物中毒";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        i = 0;
+                    }
+
+                    mVals.clear();
+                    mVals.addAll(mVals9);
+                    mFlowLayout.onChanged();
                 }
-                else if(answer1=="咳嗽"){
-                    chat10.type=1;
-                    chat10.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
-                    mAdapter.addData(chat10);
-                    if (uresult.contains("风热感冒")) {
-                        String jutiresult="风热感冒";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("风寒感冒")){
-                        String jutiresult="风寒感冒";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("急性支气管炎")){
-                        String jutiresult="急性支气管炎";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("慢性支气管炎")){
-                        String jutiresult="慢性支气管炎";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("胃十二指肠溃疡")){
-                        String jutiresult="胃十二指肠溃疡";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("慢性胃炎")){
-                        String jutiresult="慢性胃炎";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("急性腹泻")){
-                        String jutiresult="急性腹泻";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("便秘")){
-                        String jutiresult="便秘";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("低血糖")){
-                        String jutiresult="低血糖";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("类风湿、风湿")){
-                        String jutiresult="类风湿、风湿";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("痛经、月经不调")){
-                        String jutiresult="痛经、月经不调";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("偏头痛")){
-                        String jutiresult="偏头痛";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("上呼吸道感染")){
-                        String jutiresult="上呼吸道感染";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("颈椎病")){
-                        String jutiresult="颈椎病";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("外伤")){
-                        String jutiresult="外伤";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("食物中毒")){
-                        String jutiresult="食物中毒";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    i=0;
-                }
-                mVals.clear();
-                mVals.addAll(mVals9);
-                mFlowLayout.onChanged();
                 break;
 
             case 10:
@@ -5299,6 +5533,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -5356,6 +5592,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -5435,6 +5673,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -5492,6 +5732,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -5571,6 +5813,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -5628,6 +5872,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -5996,12 +6242,45 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         e.printStackTrace();
                     }
                 }
+                else if(a.contains("感冒")){
+                    answer1 = "感冒";
+                    Thread t1=new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //记得修改IP地址
+                            String path = url + "questionman2?answer1=" + answer1;
+                            try {
+                                URL url = new URL(path); //新建url并实例化
+                                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                connection.setRequestMethod("GET");//获取服务器数据
+                                connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                InputStream in = connection.getInputStream();
+                                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                Log.d("MainActivity", "run: " + result);
+                                if (result != null) {
+                                    chat2.content = question2 = result;
+                                }
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    try {
+                        t1.start();
+                        t1.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
                 else {
                     chat2.content = "非常抱歉，我现在还不能回答相关问题，您可以选择线下就医";
                     i=0;
                     mVals1.add("头痛是怎么回事");
                     mVals1.add("咳嗽是怎么回事");
                 }
+
                 if(answer1=="头痛"||answer1=="咳嗽"){
                     mVals2.add("长期");
                     mVals2.add("短期");
@@ -6014,6 +6293,10 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 else if(answer1=="排便困难"){
                     mVals2.add("是");
                     mVals2.add("否");
+                }
+                else if(answer1=="感冒"){
+                    mVals2.add("出汗、头疼、鼻塞、乏力、 咳嗽有痰（黄稠）、头胀痛、低烧、咽喉肿痛、扁桃体发炎");
+                    mVals2.add("浑身酸痛、畏寒、鼻塞、流清鼻涕、咳嗽有痰（稀白）");
                 }
                 if(issend){
                     content=a+"<br>"+question2+"   ";
@@ -6326,6 +6609,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t2.start();
                                         t2.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -6335,6 +6619,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -6377,7 +6663,135 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         mVals3.add("咳嗽是怎么回事");
                     }
                 }
+                else if(answer1=="感冒"){
+                    if (a.contains("汗")||a.contains("头")||a.contains("力")||a.contains("黄")||a.contains("烧")||a.contains("喉")||a.contains("嗓子")||a.contains("扁桃体")) {
+                        answer2="出汗、头疼、鼻塞、乏力、 咳嗽有痰（黄稠）、头胀痛、低烧、咽喉肿痛、扁桃体发炎";
+                        final Thread t2=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionidman3?answer1=" + answer1 + "&answer2=" + answer2 ;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "path: " + path);
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id = Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionman3?answer1=" + answer1 + "&answer2=" + answer2;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat4.content = question3 = result;
+                                    }else{
+                                        t2.start();
+                                        t2.join();
+                                        getresultman(id);
 
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else if (a.contains("身") || a.contains("寒")||a.contains("冷")||a.contains("鼻涕")||a.contains("白")) {
+                        answer2="浑身酸痛、畏寒、鼻塞、流清鼻涕、咳嗽有痰（稀白）";
+                        final Thread t2=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionidman3?answer1=" + answer1 + "&answer2=" + answer2 ;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        id = Integer.parseInt(result);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        Thread t1=new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String path = url + "questionman3?answer1=" + answer1 + "&answer2=" + answer2;
+                                try {
+                                    URL url = new URL(path); //新建url并实例化
+                                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                                    connection.setRequestMethod("GET");//获取服务器数据
+                                    connection.setReadTimeout(8000);//设置读取超时的毫秒数
+                                    connection.setConnectTimeout(8000);//设置连接超时的毫秒数
+                                    InputStream in = connection.getInputStream();
+                                    BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+                                    String result = reader.readLine();//读取服务器进行逻辑处理后页面显示的数据
+                                    Log.d("MainActivity", "run: " + result);
+                                    if (result != null) {
+                                        chat4.content = question3 = result;
+                                    }else{
+                                        t2.start();
+                                        t2.join();
+                                        getresultman(id);
+
+                                    }
+                                } catch (IOException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        try {
+                            t1.start();
+                            t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else{
+                        chat4.content = "非常抱歉，我无法理解您的意思，您可以换种方式提问，或者选择线下就医";
+                        i=0;
+                        mVals3.add("头痛是怎么回事");
+                        mVals3.add("咳嗽是怎么回事");
+                    }
+                }
                 if(issend){
                     content=content+"<br>"+question3+"   ";
                     chat4.type = 1;
@@ -6431,7 +6845,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             Thread t1=new Thread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    String path = url + "questionmna4?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3;
+                                    String path = url + "questionman4?answer1=" + answer1 + "&answer2=" + answer2 + "&answer3=" + answer3;
                                     try {
                                         URL url = new URL(path); //新建url并实例化
                                         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -6569,11 +6983,11 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     }
                 }
                 else if (answer1 == "腹痛") {
-                    if(answer2=="饭前"||answer2=="无区别"){
+                    if(answer2=="饭前"){
                         mVals4.add("是");
                         mVals4.add("否");
                     }
-                    else if(answer2=="饭后"){
+                    else if(answer2=="饭后"||answer2=="无区别"){
                         mVals4.add("上腹");
                         mVals4.add("中腹");
                     }
@@ -6621,6 +7035,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t4.start();
                                         t4.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -6630,6 +7045,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -6877,6 +7294,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t3.start();
                                         t3.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -6886,6 +7304,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -7642,6 +8062,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t5.start();
                                         t5.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -7651,6 +8072,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -7704,6 +8127,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t5.start();
                                         t5.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -7713,6 +8137,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -7787,6 +8213,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t6.start();
                                         t6.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -7796,6 +8223,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -7850,6 +8279,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t6.start();
                                         t6.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -7859,6 +8289,9 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
+
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -7973,6 +8406,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t6.start();
                                         t6.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -7982,6 +8416,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -8031,6 +8467,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t6.start();
                                         t6.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -8040,6 +8477,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -8361,6 +8800,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t6.start();
                                         t6.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -8370,6 +8810,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -8736,6 +9178,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -8745,6 +9188,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -8794,6 +9239,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -8803,6 +9249,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -8852,6 +9300,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -8861,6 +9310,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -8909,6 +9360,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -8918,6 +9370,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -8966,6 +9420,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -8975,6 +9430,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9023,6 +9480,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9032,6 +9490,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9080,6 +9540,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9089,6 +9550,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9317,6 +9780,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9326,6 +9790,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9443,6 +9909,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9452,6 +9919,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9503,6 +9972,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t7.start();
                                         t7.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9512,6 +9982,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9537,6 +10009,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                 final Chat chat9 = new Chat();
                 content=content+a;
                 if(answer1=="头痛"){
+                    mVals8.add("头痛是怎么回事");
+                    mVals8.add("咳嗽是怎么回事");
                     if(a.contains("麻")||a.contains("晕")){
                         answer7="手臂麻木、眩晕";
                         Thread tr = new Thread(new Runnable() {
@@ -9605,6 +10079,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9616,6 +10091,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.join();
                             tr.start();
                             tr.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9688,6 +10165,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9698,7 +10176,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.start();
                             t1.join();
                             tr.start();
-                            tr.join();
+                            tr.join();    mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9781,7 +10260,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.start();
                             t1.join();
                             tr.start();
-                            tr.join();
+                            tr.join();    mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9854,6 +10334,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9864,7 +10345,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.start();
                             t1.join();
                             tr.start();
-                            tr.join();
+                            tr.join();    mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9923,6 +10405,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9932,6 +10416,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -9980,6 +10466,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -9989,6 +10476,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10047,6 +10536,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10056,6 +10546,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10106,6 +10598,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10115,6 +10608,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10163,6 +10658,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10172,6 +10668,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10220,6 +10718,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t8.start();
                                         t8.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10229,6 +10728,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10246,6 +10747,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                     chat9.type = 1;
                     mAdapter.addData(chat9);
                     mVals.clear();
+                    //Log.d("MainActivityhhhh", "run: " + mVals8.toString());
                     mVals.addAll(mVals8);
                     mFlowLayout.onChanged();
                 }
@@ -10301,6 +10803,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t9.start();
                                         t9.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10310,6 +10813,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10358,6 +10863,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t9.start();
                                         t9.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10367,6 +10873,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10431,7 +10939,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.start();
                             t1.join();
                             tr.start();
-                            tr.join();
+                            tr.join();    mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10488,7 +10997,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.start();
                             t1.join();
                             tr.start();
-                            tr.join();
+                            tr.join();    mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10500,214 +11010,214 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         mVals9.add("咳嗽是怎么回事");
                     }
                 }
+                if(issend) {
+                    if (answer1 == "腹痛") {
+                        content = content + "<br>" + question9 + "   ";
+                        chat10.type = 1;
+                        mAdapter.addData(chat10);
+                    } else if (answer1 == "咳嗽") {
+                        chat10.type = 1;
+                        chat10.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。" + "已将您此次问诊生成电子病历。";
+                        mAdapter.addData(chat10);
+                        if (uresult.contains("风热感冒")) {
+                            String jutiresult = "风热感冒";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
 
-                if(answer1=="腹痛"){
-                    content=content+"<br>"+question9+"   ";
-                    chat10.type = 1;
-                    mAdapter.addData(chat10);
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("风寒感冒")) {
+                            String jutiresult = "风寒感冒";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("急性支气管炎")) {
+                            String jutiresult = "急性支气管炎";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("慢性支气管炎")) {
+                            String jutiresult = "慢性支气管炎";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("胃十二指肠溃疡")) {
+                            String jutiresult = "胃十二指肠溃疡";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("慢性胃炎")) {
+                            String jutiresult = "慢性胃炎";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("急性腹泻")) {
+                            String jutiresult = "急性腹泻";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("便秘")) {
+                            String jutiresult = "便秘";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("低血糖")) {
+                            String jutiresult = "低血糖";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("类风湿、风湿")) {
+                            String jutiresult = "类风湿、风湿";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("痛经、月经不调")) {
+                            String jutiresult = "痛经、月经不调";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("偏头痛")) {
+                            String jutiresult = "偏头痛";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("上呼吸道感染")) {
+                            String jutiresult = "上呼吸道感染";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("颈椎病")) {
+                            String jutiresult = "颈椎病";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("外伤")) {
+                            String jutiresult = "外伤";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+                        if (uresult.contains("食物中毒")) {
+                            String jutiresult = "食物中毒";
+                            List<String> list = new ArrayList();
+                            list = yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
+
+                            for (int i = 0; i < list.size(); i++) {
+                                Chat chatmedic = new Chat();
+                                chatmedic.type = 1;
+                                chatmedic.content = jutiresult + "\r\n" + list.get(i);
+                                mAdapter.addData(chatmedic);
+                            }
+                        }
+
+                        i = 0;
+                    }
+                    mVals.clear();
+                    mVals.addAll(mVals9);
+                    mFlowLayout.onChanged();
                 }
-                else if(answer1=="咳嗽"){
-                    chat10.type=1;
-                    chat10.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
-                    mAdapter.addData(chat10);
-                    if (uresult.contains("风热感冒")) {
-                        String jutiresult="风热感冒";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("风寒感冒")){
-                        String jutiresult="风寒感冒";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("急性支气管炎")){
-                        String jutiresult="急性支气管炎";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("慢性支气管炎")){
-                        String jutiresult="慢性支气管炎";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("胃十二指肠溃疡")){
-                        String jutiresult="胃十二指肠溃疡";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("慢性胃炎")){
-                        String jutiresult="慢性胃炎";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("急性腹泻")){
-                        String jutiresult="急性腹泻";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("便秘")){
-                        String jutiresult="便秘";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("低血糖")){
-                        String jutiresult="低血糖";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("类风湿、风湿")){
-                        String jutiresult="类风湿、风湿";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("痛经、月经不调")){
-                        String jutiresult="痛经、月经不调";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("偏头痛")){
-                        String jutiresult="偏头痛";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("上呼吸道感染")){
-                        String jutiresult="上呼吸道感染";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("颈椎病")){
-                        String jutiresult="颈椎病";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("外伤")){
-                        String jutiresult="外伤";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-                    if(uresult.contains("食物中毒")){
-                        String jutiresult="食物中毒";
-                        List<String> list = new ArrayList();
-                        list=yaopinActivity.parseWithJSON(yaopinActivity.getyaopininfo(jutiresult));
-
-                        for(int i=0;i<list.size();i++){
-                            Chat chatmedic=new Chat();
-                            chatmedic.type=1;
-                            chatmedic.content=jutiresult+"\r\n" +list.get(i);
-                            mAdapter.addData(chatmedic);
-                        }
-                    }
-
-                    i=0;
-                }
-                mVals.clear();
-                mVals.addAll(mVals9);
-                mFlowLayout.onChanged();
                 break;
 
             case 9:
@@ -10760,6 +11270,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t10.start();
                                         t10.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10769,6 +11280,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10817,6 +11330,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t10.start();
                                         t10.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10826,6 +11340,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10896,6 +11412,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t11.start();
                                         t11.join();
                                         getresultman(id);
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10905,6 +11422,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -10953,6 +11472,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                                         t11.start();
                                         t11.join();
                                         getresultman(id);
+
+
                                     }
                                 } catch (IOException | InterruptedException e) {
                                     e.printStackTrace();
@@ -10962,6 +11483,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                         try {
                             t1.start();
                             t1.join();
+                            mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -11040,7 +11563,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.start();
                             t1.join();
                             tr.start();
-                            tr.join();
+                            tr.join();    mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -11097,7 +11621,8 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
                             t1.start();
                             t1.join();
                             tr.start();
-                            tr.join();
+                            tr.join();    mVals.clear();
+                            mFlowLayout.onChanged();
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -11388,8 +11913,6 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         chatresult.content = "谢谢您的回答，您可能的疾病是" + uresult + ". " + "如果出现紧急情况，请及时就医哦。"+"已将您此次问诊生成电子病历。";
         mAdapter.addData(chatresult);
         mVals.clear();
-        mVals.add("头痛是怎么回事");
-        mVals.add("咳嗽是怎么回事");
 
         if (uresult.contains("风热感冒")) {
             String jutiresult="风热感冒";
@@ -11651,6 +12174,7 @@ public class MainActivity extends AppCompatActivity implements EasyPermissions.P
         mVals.clear();
         mVals.add("头痛是怎么回事");
         mVals.add("咳嗽是怎么回事");
+
         if (uresult.contains("风热感冒")) {
             String jutiresult="风热感冒";
             List<String> list = new ArrayList();
